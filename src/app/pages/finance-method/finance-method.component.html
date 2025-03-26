@@ -1,0 +1,74 @@
+<ion-content class="ion-padding">
+  <form [formGroup]="financeMethodForm" (ngSubmit)="onSubmit()">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Select Finance Method</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- Default Method Card -->
+        <ion-card [class.selected]="!isCustomizing" (click)="toggleCustomization()">
+          <ion-card-content>
+            <h2>75/15/10 Method</h2>
+            <div class="method-details">
+              <div class="method-item">
+                <span class="label">Expenses:</span>
+                <span class="value">75%</span>
+              </div>
+              <div class="method-item">
+                <span class="label">Investments:</span>
+                <span class="value">15%</span>
+              </div>
+              <div class="method-item">
+                <span class="label">Savings:</span>
+                <span class="value">10%</span>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Custom Method Card -->
+        <ion-card [class.selected]="isCustomizing" (click)="toggleCustomization()">
+          <ion-card-content>
+            <h2>Custom Method</h2>
+            <div class="method-details">
+              <div class="method-item">
+                <span class="label">Expenses:</span>
+                <ion-range formControlName="expenses" min="0" max="100">
+                  <ion-label slot="start">0%</ion-label>
+                  <ion-label slot="end">100%</ion-label>
+                </ion-range>
+                <span class="value">{{financeMethodForm.get('expenses')?.value}}%</span>
+              </div>
+              <div class="method-item">
+                <span class="label">Investments:</span>
+                <ion-range formControlName="investments" min="0" max="100">
+                  <ion-label slot="start">0%</ion-label>
+                  <ion-label slot="end">100%</ion-label>
+                </ion-range>
+                <span class="value">{{financeMethodForm.get('investments')?.value}}%</span>
+              </div>
+              <div class="method-item">
+                <span class="label">Savings:</span>
+                <ion-range formControlName="savings" min="0" max="100">
+                  <ion-label slot="start">0%</ion-label>
+                  <ion-label slot="end">100%</ion-label>
+                </ion-range>
+                <span class="value">{{financeMethodForm.get('savings')?.value}}%</span>
+              </div>
+            </div>
+            <div class="total">
+              Total: {{getTotal()}}%
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button expand="block" 
+                type="submit" 
+                [disabled]="!financeMethodForm.valid || getTotal() !== 100"
+                class="submit-button">
+      Continue
+    </ion-button>
+  </form>
+</ion-content> 

@@ -1,0 +1,68 @@
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Welcome</ion-card-title>
+        <ion-card-subtitle>Sign in or create an account</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form (ngSubmit)="handleSubmit()">
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input 
+              type="email" 
+              [(ngModel)]="email" 
+              name="email"
+              required>
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input 
+              type="password" 
+              [(ngModel)]="password" 
+              name="password"
+              required>
+            </ion-input>
+          </ion-item>
+
+          <div class="ion-padding">
+            <ion-button 
+              expand="block" 
+              type="submit"
+              [disabled]="isLoading">
+              {{ isLoginMode ? 'Sign In' : 'Register' }}
+            </ion-button>
+            
+            <ion-button 
+              expand="block" 
+              fill="clear" 
+              (click)="toggleMode()"
+              [disabled]="isLoading">
+              {{ isLoginMode ? 'No account? Register' : 'Already have an account? Sign In' }}
+            </ion-button>
+
+            <div class="divider">
+              <span>or</span>
+            </div>
+
+            <ion-button 
+              expand="block" 
+              fill="outline"
+              (click)="handleGoogleLogin()"
+              [disabled]="isLoading">
+              <ion-icon name="logo-google" slot="start"></ion-icon>
+              Continue with Google
+            </ion-button>
+          </div>
+
+          <ion-text color="danger" *ngIf="errorMessage">
+            {{ errorMessage }}
+          </ion-text>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content> 

@@ -18,5 +18,5 @@ import { IonicModule } from '@ionic/angular';
   `]
 })
 export class AppComponent {
-  title = 'FinanceHelper';
+  title = 'finance-app';
 }
