@@ -6,65 +6,84 @@
       <p>Let's start by adding your monthly income sources.</p>
     </div>
 
-    <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()">
-      <div formArrayName="incomes">
-        <div *ngFor="let income of incomes.controls; let i=index" [formGroupName]="i">
-          <ion-card class="income-card">
-            <ion-card-content>
-              <div class="form-group">
-                <label>Income Source</label>
-                <ion-input 
-                  class="custom-input"
-                  formControlName="source" 
-                  placeholder="e.g., Salary, Freelance, Business">
-                </ion-input>
-              </div>
-
-              <div class="form-group">
-                <label>Amount</label>
-                <ion-input 
-                  class="custom-input"
-                  type="number" 
-                  formControlName="amount" 
-                  placeholder="0.00">
-                  <ion-text slot="end" class="currency">€</ion-text>
-                </ion-input>
-              </div>
-
-              <ion-button *ngIf="incomes.length > 1" 
-                        fill="clear"
-                        color="danger" 
-                        (click)="removeIncome(i)"
-                        class="remove-button">
-                <ion-icon name="trash-outline" slot="start"></ion-icon>
-                Remove
-              </ion-button>
-            </ion-card-content>
-          </ion-card>
-        </div>
+    <!-- Income Table -->
+    <div class="income-table">
+      <h2>Your Income Sources</h2>
+      <div *ngIf="savedIncomes.length === 0" class="empty-state">
+        <p>No income sources added yet. Add your first income source below.</p>
       </div>
+      <ion-list *ngIf="savedIncomes.length > 0">
+        <ion-item *ngFor="let income of savedIncomes; let i=index">
+          <ion-label>
+            <h3>{{income.name}}</h3>
+            <p>{{income.amount | currency:'EUR'}}</p>
+          </ion-label>
+          <ion-button slot="end" 
+                      fill="clear" 
+                      color="danger" 
+                      (click)="removeIncome(i)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </div>
 
-      <!-- Add Income Button -->
-      <ion-button expand="block" 
-                  fill="outline"
-                  class="add-button"
-                  (click)="addIncome()">
-        <ion-icon name="add-outline" slot="start"></ion-icon>
-        Add Another Income Source
-      </ion-button>
+    <!-- Add New Income Form -->
+    <div class="add-income-form">
+      <h2>Add New Income Source</h2>
+      <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>Income Source</label>
+          <ion-input 
+            class="custom-input"
+            formControlName="source" 
+            placeholder="e.g., Salary, Freelance, Business">
+          </ion-input>
+        </div>
 
-      <!-- Submit Button -->
-      <ion-button expand="block" 
+        <div class="form-group">
+          <label>Amount</label>
+          <ion-input 
+            class="custom-input"
+            type="number" 
+            formControlName="amount" 
+            placeholder="0.00">
+            <ion-text slot="end" class="currency">€</ion-text>
+          </ion-input>
+        </div>
+
+        <ion-button expand="block" 
                   type="submit" 
                   [disabled]="!incomeForm.valid"
                   class="submit-button">
-        Continue
-      </ion-button>
+          Add Income Source
+        </ion-button>
+      </form>
+    </div>
 
-      <!-- Skip Link -->
-      <div class="skip-link">
-        Want to add this later? <a (click)="skipForNow()">Skip for now</a>
+    <!-- Navigation -->
+    <div class="page-navigation">
+      <div class="progress-dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
       </div>
-    </form>
+      <div class="nav-buttons">
+        <ion-button 
+          class="back-button" 
+          fill="clear"
+          disabled>
+          <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+          Previous
+        </ion-button>
+        <ion-button 
+          class="next-button" 
+          [disabled]="savedIncomes.length === 0"
+          (click)="continueToNext()">
+          Next
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
   </div>
 </ion-content> 

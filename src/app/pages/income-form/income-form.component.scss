@@ -19,6 +19,66 @@
   }
 }
 
+.income-table {
+  margin-bottom: 40px;
+  
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--ion-color-dark);
+  }
+
+  .empty-state {
+    background: var(--ion-color-light);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    color: var(--ion-color-medium);
+    
+    p {
+      margin: 0;
+      font-size: 16px;
+    }
+  }
+
+  ion-list {
+    background: transparent;
+    padding: 0;
+  }
+
+  ion-item {
+    --background: var(--ion-color-light);
+    --border-radius: 12px;
+    margin-bottom: 8px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --min-height: 64px;
+
+    h3 {
+      font-weight: 500;
+      margin: 0;
+      color: var(--ion-color-dark);
+    }
+
+    p {
+      margin: 4px 0 0;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+.add-income-form {
+  margin-bottom: 40px;
+  
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--ion-color-dark);
+  }
+}
+
 .income-card {
   margin-bottom: 20px;
   border-radius: 12px;
@@ -30,13 +90,14 @@
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   
   label {
     display: block;
     color: var(--ion-color-dark);
     font-weight: 500;
     margin-bottom: 8px;
+    font-size: 14px;
   }
 }
 
@@ -84,17 +145,82 @@
   --border-radius: 12px;
   --padding-top: 16px;
   --padding-bottom: 16px;
-  margin-bottom: 24px;
+  margin-top: 8px;
   font-weight: 600;
 }
 
-.skip-link {
-  text-align: center;
-  color: var(--ion-color-medium);
+.continue-button {
+  --background: var(--ion-color-primary);
+  --border-radius: 12px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  margin-top: 32px;
+  font-weight: 600;
+}
+
+// Page Navigation
+.page-navigation {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.progress-dots {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ion-color-medium);
+  opacity: 0.3;
+
+  &.active {
+    opacity: 1;
+    background: var(--ion-color-primary);
+  }
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 16px;
+}
+
+.back-button {
+  --color: var(--ion-color-medium);
+  font-weight: 500;
   
-  a {
-    color: var(--ion-color-primary);
-    text-decoration: none;
-    font-weight: 600;
+  ion-icon {
+    margin-right: 8px;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+.next-button {
+  --background: var(--ion-color-primary);
+  --color: #fff;
+  --border-radius: 12px;
+  --padding-start: 32px;
+  --padding-end: 32px;
+  font-weight: 600;
+  
+  ion-icon {
+    margin-left: 8px;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
   }
 } 
