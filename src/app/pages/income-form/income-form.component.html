@@ -1,42 +1,70 @@
 <ion-content class="ion-padding">
-  <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()">
-    <div formArrayName="incomes">
-      <div *ngFor="let income of incomes.controls; let i=index" [formGroupName]="i">
-        <ion-card>
-          <ion-button *ngIf="incomes.length > 1" 
-                     color="danger" 
-                     (click)="removeIncome(i)"
-                     class="remove-button">
-            <ion-icon name="trash-outline" size="small" slot="icon-only"></ion-icon>
-          </ion-button>
-          <ion-card-content>
-            <ion-item>
-              <ion-label position="stacked">Income Source</ion-label>
-              <ion-input formControlName="source" placeholder="e.g., Salary"></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-label position="stacked">Amount</ion-label>
-              <ion-input type="number" formControlName="amount" placeholder="0.00"></ion-input>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
-      </div>
+  <div class="form-container">
+    <!-- Header -->
+    <div class="welcome-header">
+      <h1>Add Your Income Sources 💰</h1>
+      <p>Let's start by adding your monthly income sources.</p>
     </div>
 
-    <ion-button expand="block" 
-                color="primary" 
-                (click)="addIncome()"
-                class="add-button">
-      <ion-icon name="add-outline" slot="start"></ion-icon>
-      Add Another Income Source
-    </ion-button>
+    <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()">
+      <div formArrayName="incomes">
+        <div *ngFor="let income of incomes.controls; let i=index" [formGroupName]="i">
+          <ion-card class="income-card">
+            <ion-card-content>
+              <div class="form-group">
+                <label>Income Source</label>
+                <ion-input 
+                  class="custom-input"
+                  formControlName="source" 
+                  placeholder="e.g., Salary, Freelance, Business">
+                </ion-input>
+              </div>
 
-    <ion-button expand="block" 
-                type="submit" 
-                [disabled]="!incomeForm.valid"
-                class="submit-button">
-      Next
-    </ion-button>
-  </form>
+              <div class="form-group">
+                <label>Amount</label>
+                <ion-input 
+                  class="custom-input"
+                  type="number" 
+                  formControlName="amount" 
+                  placeholder="0.00">
+                  <ion-text slot="end" class="currency">€</ion-text>
+                </ion-input>
+              </div>
+
+              <ion-button *ngIf="incomes.length > 1" 
+                        fill="clear"
+                        color="danger" 
+                        (click)="removeIncome(i)"
+                        class="remove-button">
+                <ion-icon name="trash-outline" slot="start"></ion-icon>
+                Remove
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+
+      <!-- Add Income Button -->
+      <ion-button expand="block" 
+                  fill="outline"
+                  class="add-button"
+                  (click)="addIncome()">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Add Another Income Source
+      </ion-button>
+
+      <!-- Submit Button -->
+      <ion-button expand="block" 
+                  type="submit" 
+                  [disabled]="!incomeForm.valid"
+                  class="submit-button">
+        Continue
+      </ion-button>
+
+      <!-- Skip Link -->
+      <div class="skip-link">
+        Want to add this later? <a (click)="skipForNow()">Skip for now</a>
+      </div>
+    </form>
+  </div>
 </ion-content> 

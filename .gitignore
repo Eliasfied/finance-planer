@@ -55,6 +55,15 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+# Firebase config
+src/environments/*
+.env
+.env.local
+.env.*.local
+firebase-config.ts
+firebaseConfig.ts
+**/firebase-config.*
+**/firebaseConfig.*
 
 # Miscellaneous
 /.angular
@@ -71,3 +80,7 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Environment files
+/src/environments/environment.ts
+/src/environments/environment.prod.ts

@@ -131,4 +131,11 @@
     text-decoration: none;
     font-weight: 600;
   }
+}
+
+.error-message {
+  color: var(--ion-color-danger);
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
 } 

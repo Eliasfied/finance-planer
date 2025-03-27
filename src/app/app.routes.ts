@@ -2,11 +2,13 @@ import { Routes } from '@angular/router';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { IncomeFormComponent } from './pages/income-form/income-form.component';
 import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { FinanceMethodComponent } from './pages/finance-method/finance-method.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { 
     path: 'welcome', 
     component: WelcomeComponent,

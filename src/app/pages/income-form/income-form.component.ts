@@ -22,6 +22,7 @@ addIcons({ trashOutline, addOutline });
 export class IncomeFormComponent {
   incomeForm: FormGroup;
   currentUserId: string | null = null;
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
@@ -36,7 +37,13 @@ export class IncomeFormComponent {
 
     // Get current user
     onAuthStateChanged(this.auth, (user) => {
-      this.currentUserId = user?.uid || null;
+      if (user) {
+        this.currentUserId = user.uid;
+        console.log('Current user:', this.currentUserId);
+      } else {
+        console.error('No user logged in');
+        this.router.navigate(['/login']);
+      }
     });
   }
 
@@ -59,7 +66,14 @@ export class IncomeFormComponent {
   }
 
   async onSubmit() {
-    if (this.incomeForm.valid && this.currentUserId) {
+    if (!this.currentUserId) {
+      console.error('No user logged in');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (this.incomeForm.valid && !this.isSubmitting) {
+      this.isSubmitting = true;
       try {
         // Convert form data to FinancialEntry[]
         const incomeEntries: FinancialEntry[] = this.incomes.controls.map(control => ({
@@ -78,7 +92,13 @@ export class IncomeFormComponent {
         this.router.navigate(['/finance-method']);
       } catch (error) {
         console.error('Error saving incomes:', error);
+      } finally {
+        this.isSubmitting = false;
       }
     }
+  }
+
+  skipForNow() {
+    this.router.navigate(['/finance-method']);
   }
 } 

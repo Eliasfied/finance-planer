@@ -8,13 +8,13 @@ import { addIcons } from 'ionicons';
 import { logoGoogle, logoFacebook, eyeOutline, eyeOffOutline } from 'ionicons/icons';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true,
   imports: [CommonModule, IonicModule, FormsModule],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
-export class LoginComponent {
+export class RegisterComponent {
   email: string = '';
   password: string = '';
   isLoading: boolean = false;
@@ -53,13 +53,11 @@ export class LoginComponent {
     this.errorMessage = '';
 
     try {
-      await this.authService.login(this.email, this.password);
+      await this.authService.register(this.email, this.password);
       
       // Save remember me preference
       if (this.rememberMe) {
         localStorage.setItem('rememberEmail', this.email);
-      } else {
-        localStorage.removeItem('rememberEmail');
       }
 
       this.router.navigate(['/welcome']);
@@ -70,7 +68,7 @@ export class LoginComponent {
     }
   }
 
-  async handleGoogleLogin() {
+  async handleGoogleSignup() {
     this.isLoading = true;
     this.errorMessage = '';
 
@@ -84,7 +82,7 @@ export class LoginComponent {
     }
   }
 
-  navigateToRegister() {
-    this.router.navigate(['/register']);
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 } 

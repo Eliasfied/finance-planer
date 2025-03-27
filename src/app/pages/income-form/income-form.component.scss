@@ -1,91 +1,100 @@
-.income-form-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: white;
+.form-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.welcome-header {
+  margin-bottom: 40px;
+  
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+.income-card {
+  margin-bottom: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  color: #2c3e50;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.income-entry {
-  position: relative;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  border-radius: 8px;
-  background: var(--ion-color-light);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  ion-card-content {
+    padding: 16px;
+  }
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
+  
+  label {
+    display: block;
+    color: var(--ion-color-dark);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
 }
 
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #34495e;
-  font-weight: 500;
+.custom-input {
+  --background: var(--ion-color-light);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --border-radius: 12px;
+  --placeholder-color: var(--ion-color-medium);
+  min-height: 48px;
+  
+  &::part(native) {
+    padding: 0;
+  }
 }
 
-input, select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
+.currency {
+  margin-right: 16px;
+  color: var(--ion-color-medium);
 }
 
-.add-button, .submit-button, .remove-button {
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
+.remove-button {
+  margin-top: 8px;
+  --padding-start: 0;
+  font-size: 14px;
+  
+  ion-icon {
+    margin-right: 4px;
+  }
 }
 
 .add-button {
-  color: white;
-  margin: 1rem 0;
-  width: 100%;
-
-  &:hover {
-    background-color: #27ae60;
+  margin-bottom: 16px;
+  --border-radius: 12px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  
+  ion-icon {
+    margin-right: 8px;
   }
 }
 
 .submit-button {
-  color: white;
-  width: 100%;
-  margin-top: 1rem;
+  --background: var(--ion-color-primary);
+  --border-radius: 12px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
 
-  &:hover {
-    background-color: #2980b9;
+.skip-link {
+  text-align: center;
+  color: var(--ion-color-medium);
+  
+  a {
+    color: var(--ion-color-primary);
+    text-decoration: none;
+    font-weight: 600;
   }
-
-  &:disabled {
-    background-color: #bdc3c7;
-    cursor: not-allowed;
-  }
-}
-
-.remove-button {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  z-index: 2;
-}
-
-ion-card {
-  margin-bottom: 1rem;
-  position: relative;
-}
-
-ion-item {
-  --padding-start: 0;
-  --inner-padding-end: 0;
-  margin-bottom: 1rem;
 } 
