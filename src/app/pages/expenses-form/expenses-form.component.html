@@ -1,0 +1,84 @@
+<p>
+  expenses-form works!
+</p>
+
+<ion-content class="ion-padding">
+  <div class="expenses-container">
+    <!-- Header with back button and add button -->
+    <div class="header">
+      <ion-button fill="clear" class="back-button" (click)="goBack()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <h1>Expenses</h1>
+      <ion-button fill="clear" class="add-button" (click)="addExpense()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+    <!-- Total Amount -->
+    <div class="total-amount">
+      <h2>$1,812</h2>
+    </div>
+
+    <!-- Budget Progress -->
+    <div class="budget-card">
+      <div class="budget-info">
+        <div class="left-to-spend">
+          <span class="label">Left to spend</span>
+          <span class="amount">$738</span>
+        </div>
+        <div class="monthly-budget">
+          <span class="label">Monthly budget</span>
+          <span class="amount">$2,550</span>
+        </div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress" style="width: 71%;">
+          <div class="progress-segment spent" style="width: 60%;"></div>
+          <div class="progress-segment remaining" style="width: 11%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expense Categories -->
+    <div class="expense-categories">
+      <!-- Auto & Transport Category -->
+      <div class="category-group">
+        <div class="category-header">
+          <div class="category-icon auto">
+            <ion-icon name="car-outline"></ion-icon>
+          </div>
+          <div class="category-info">
+            <h3>Auto & transport</h3>
+            <span class="amount">$700</span>
+          </div>
+        </div>
+        
+        <!-- Category Items -->
+        <div class="category-items">
+          <div class="expense-item">
+            <span class="item-name">Auto & transport</span>
+            <span class="item-amount">$350</span>
+          </div>
+          <div class="expense-item">
+            <span class="item-name">Auto insurance</span>
+            <span class="item-amount">$250</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bills & Utilities Category -->
+      <div class="category-group">
+        <div class="category-header">
+          <div class="category-icon bills">
+            <ion-icon name="receipt-outline"></ion-icon>
+          </div>
+          <div class="category-info">
+            <h3>Bill & Utilities</h3>
+            <span class="amount">$320</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

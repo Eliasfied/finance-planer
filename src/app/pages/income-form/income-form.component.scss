@@ -34,6 +34,7 @@
   }
 
   .empty-state {
+    
     text-align: center;
     padding: 24px;
     background: var(--ion-color-light);
@@ -72,7 +73,7 @@
 
       p {
         font-size: 14px;
-        color: var(--ion-color-medium);
+        color: var(--ion-color-light);
         margin: 0;
       }
     }

@@ -1,74 +1,121 @@
 <ion-content class="ion-padding">
-  <form [formGroup]="financeMethodForm" (ngSubmit)="onSubmit()">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Select Finance Method</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <!-- Default Method Card -->
-        <ion-card [class.selected]="!isCustomizing" (click)="toggleCustomization()">
-          <ion-card-content>
-            <h2>75/15/10 Method</h2>
-            <div class="method-details">
-              <div class="method-item">
-                <span class="label">Expenses:</span>
-                <span class="value">75%</span>
-              </div>
-              <div class="method-item">
-                <span class="label">Investments:</span>
-                <span class="value">15%</span>
-              </div>
-              <div class="method-item">
-                <span class="label">Savings:</span>
-                <span class="value">10%</span>
-              </div>
-            </div>
-          </ion-card-content>
-        </ion-card>
+  <div class="form-container">
+    <!-- Header -->
+    <div class="welcome-header">
+      <img src="assets/images/income-illustration.jpg" alt="Finance Management Illustration">
+      <p>Select how you want to distribute your monthly income</p>
+    </div>
 
-        <!-- Custom Method Card -->
-        <ion-card [class.selected]="isCustomizing" (click)="toggleCustomization()">
-          <ion-card-content>
-            <h2>Custom Method</h2>
-            <div class="method-details">
-              <div class="method-item">
-                <span class="label">Expenses:</span>
-                <ion-range formControlName="expenses" min="0" max="100">
-                  <ion-label slot="start">0%</ion-label>
-                  <ion-label slot="end">100%</ion-label>
-                </ion-range>
+    <!-- Main Content -->
+    <div class="method-options">
+      <form [formGroup]="financeMethodForm" (ngSubmit)="onSubmit()">
+        <!-- Method Card -->
+        <div class="method-card default-method" [class.expanded]="isCustomizing">
+          <div class="recommended-tag" [class.custom]="!isDefaultMethod()">
+            <ion-icon [name]="isDefaultMethod() ? 'checkmark-circle' : 'create-outline'"></ion-icon>
+            <span>{{ isDefaultMethod() ? 'Recommended' : 'Custom' }}</span>
+          </div>
+          
+          <h2>{{getMethodTitle()}}</h2>
+          
+          <!-- Default View -->
+          <div class="method-details" [class.hidden]="isCustomizing">
+            <div class="method-item">
+              <ion-icon name="cart-outline"></ion-icon>
+              <span class="value">{{financeMethodForm.get('expenses')?.value}}%</span>
+              <span class="label">Expenses</span>
+            </div>
+            <div class="method-item">
+              <ion-icon name="trending-up-outline"></ion-icon>
+              <span class="value">{{financeMethodForm.get('investments')?.value}}%</span>
+              <span class="label">Investments</span>
+            </div>
+            <div class="method-item">
+              <ion-icon name="wallet-outline"></ion-icon>
+              <span class="value">{{financeMethodForm.get('savings')?.value}}%</span>
+              <span class="label">Savings</span>
+            </div>
+          </div>
+
+          <!-- Expanded View with Sliders -->
+          <div class="method-details-expanded" *ngIf="isCustomizing" [@slideInOut]>
+            <div class="method-item">
+              <div class="item-header">
+                <ion-icon name="cart-outline"></ion-icon>
+                <span class="label">Expenses</span>
                 <span class="value">{{financeMethodForm.get('expenses')?.value}}%</span>
               </div>
-              <div class="method-item">
-                <span class="label">Investments:</span>
-                <ion-range formControlName="investments" min="0" max="100">
-                  <ion-label slot="start">0%</ion-label>
-                  <ion-label slot="end">100%</ion-label>
-                </ion-range>
+              <ion-range formControlName="expenses" min="0" max="100">
+                <ion-label slot="start">0%</ion-label>
+                <ion-label slot="end">100%</ion-label>
+              </ion-range>
+            </div>
+            <div class="method-item">
+              <div class="item-header">
+                <ion-icon name="trending-up-outline"></ion-icon>
+                <span class="label">Investments</span>
                 <span class="value">{{financeMethodForm.get('investments')?.value}}%</span>
               </div>
-              <div class="method-item">
-                <span class="label">Savings:</span>
-                <ion-range formControlName="savings" min="0" max="100">
-                  <ion-label slot="start">0%</ion-label>
-                  <ion-label slot="end">100%</ion-label>
-                </ion-range>
+              <ion-range formControlName="investments" min="0" max="100">
+                <ion-label slot="start">0%</ion-label>
+                <ion-label slot="end">100%</ion-label>
+              </ion-range>
+            </div>
+            <div class="method-item">
+              <div class="item-header">
+                <ion-icon name="wallet-outline"></ion-icon>
+                <span class="label">Savings</span>
                 <span class="value">{{financeMethodForm.get('savings')?.value}}%</span>
               </div>
+              <ion-range formControlName="savings" min="0" max="100">
+                <ion-label slot="start">0%</ion-label>
+                <ion-label slot="end">100%</ion-label>
+              </ion-range>
             </div>
-            <div class="total">
-              Total: {{getTotal()}}%
+            <div class="total-section">
+              <div class="total" [class.invalid]="getTotal() !== 100">
+                Total: {{getTotal()}}%
+              </div>
+              <div class="error-message" *ngIf="getTotal() !== 100">
+                <ion-icon name="warning-outline"></ion-icon>
+                Total must be 100%
+              </div>
             </div>
-          </ion-card-content>
-        </ion-card>
-      </ion-card-content>
-    </ion-card>
+          </div>
 
-    <ion-button expand="block" 
-                type="submit" 
-                [disabled]="!financeMethodForm.valid || getTotal() !== 100"
-                class="submit-button">
-      Continue
-    </ion-button>
-  </form>
+          <!-- Customize Button -->
+          <div class="customize-button">
+            <ion-button 
+              fill="clear" 
+              (click)="toggleCustomization()"
+              [disabled]="isCustomizing && getTotal() !== 100">
+              <ion-icon [name]="isCustomizing ? 'close-outline' : 'create-outline'" slot="start"></ion-icon>
+              {{ isCustomizing ? 'Close' : 'Customize' }}
+            </ion-button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Navigation -->
+    <div class="page-navigation">
+      <app-progress-dots [currentStep]="2"></app-progress-dots>
+      <div class="nav-buttons">
+        <ion-button 
+          class="back-button" 
+          fill="clear"
+          (click)="navigateBack()">
+          <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+          Previous
+        </ion-button>
+        <ion-button 
+          class="next-button" 
+          [disabled]="!financeMethodForm.valid || getTotal() !== 100"
+          (click)="onSubmit()">
+          Next
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div>
 </ion-content> 

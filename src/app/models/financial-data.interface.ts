@@ -4,11 +4,12 @@ export interface FinancialEntry {
 }
 
 export interface FinancialData {
+  // User ID
   uid: string;
   // Total values
-  expensesValue: number;
-  investmentsValue: number;
-  savingsValue: number;
+  expensesPercentageValue: number;
+  investmentsPercentageValue: number;
+  savingsPercentageValue: number;
   
   // Lists of entries
   incomes: FinancialEntry[];

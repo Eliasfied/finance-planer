@@ -26,9 +26,9 @@ export class FinancialDataService {
   async createFinancialData(userId: string): Promise<void> {
     const initialData: FinancialData = {
       uid: userId,
-      expensesValue: 0,
-      investmentsValue: 0,
-      savingsValue: 0,
+      expensesPercentageValue: 0,
+      investmentsPercentageValue: 0,
+      savingsPercentageValue: 0,
       incomes: [],
       expenses: [],
       investments: [],
@@ -60,16 +60,25 @@ export class FinancialDataService {
     });
   }
 
+  async addDistributionValues(userId: string, expensePercentage: number, investmentPercentage: number, savingsPercentage: number): Promise<void> {
+    const docRef = doc(this.firestore, 'financialData', userId);
+    
+    await updateDoc(docRef, {
+      expensesPercentageValue: expensePercentage,
+      investmentsPercentageValue: investmentPercentage,
+      savingsPercentageValue: savingsPercentage,
+      lastUpdated: new Date()
+    });
+  }
+
   async addExpense(userId: string, expense: FinancialEntry): Promise<void> {
     const docRef = doc(this.firestore, 'financialData', userId);
     const data = await this.ensureFinancialDataExists(userId);
     
     const updatedExpenses = [...data.expenses, expense];
-    const newExpensesValue = data.expensesValue + expense.amount;
     
     await updateDoc(docRef, {
       expenses: updatedExpenses,
-      expensesValue: newExpensesValue,
       lastUpdated: new Date()
     });
   }
@@ -79,11 +88,9 @@ export class FinancialDataService {
     const data = await this.ensureFinancialDataExists(userId);
     
     const updatedInvestments = [...data.investments, investment];
-    const newInvestmentsValue = data.investmentsValue + investment.amount;
     
     await updateDoc(docRef, {
       investments: updatedInvestments,
-      investmentsValue: newInvestmentsValue,
       lastUpdated: new Date()
     });
   }
@@ -93,11 +100,9 @@ export class FinancialDataService {
     const data = await this.ensureFinancialDataExists(userId);
     
     const updatedSavings = [...data.savings, saving];
-    const newSavingsValue = data.savingsValue + saving.amount;
     
     await updateDoc(docRef, {
       savings: updatedSavings,
-      savingsValue: newSavingsValue,
       lastUpdated: new Date()
     });
   }
@@ -107,21 +112,11 @@ export class FinancialDataService {
     const data = await this.ensureFinancialDataExists(userId);
     
     const updatedEntries = [...data[type]];
-    const removedEntry = updatedEntries.splice(index, 1)[0];
     
     const update: any = {
       [type]: updatedEntries,
       lastUpdated: new Date()
     };
-
-    // Update the corresponding value field
-    if (type === 'expenses') {
-      update.expensesValue = data.expensesValue - removedEntry.amount;
-    } else if (type === 'investments') {
-      update.investmentsValue = data.investmentsValue - removedEntry.amount;
-    } else if (type === 'savings') {
-      update.savingsValue = data.savingsValue - removedEntry.amount;
-    }
 
     await updateDoc(docRef, update);
   }

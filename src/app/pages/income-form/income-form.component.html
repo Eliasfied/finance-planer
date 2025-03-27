@@ -12,14 +12,14 @@
         <p>No income sources added yet. Add your first income source below.</p>
       </div>
       <ion-list *ngIf="savedIncomes.length > 0">
-        <ion-item *ngFor="let income of savedIncomes; let i=index">
+        <ion-item color="primary" *ngFor="let income of savedIncomes; let i=index">
           <ion-label>
             <h3>{{income.name}}</h3>
             <p>{{income.amount | currency:'EUR'}}</p>
           </ion-label>
           <ion-button slot="end" 
                       fill="clear" 
-                      color="danger" 
+                      color="light" 
                       (click)="removeIncome(i)">
             <ion-icon name="trash-outline"></ion-icon>
           </ion-button>
