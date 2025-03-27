@@ -1,22 +1,76 @@
 .welcome-container {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 32px); // Full viewport height minus padding
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.welcome-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
   text-align: center;
   padding: 20px;
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  font-weight: bold;
+.illustration {
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 40px;
+  
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
 }
 
-p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+.content-text {
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ion-color-dark);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ion-color-medium);
+    margin-bottom: 0;
+    padding: 0 20px;
+  }
+}
+
+.navigation-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px;
+  margin-bottom: 20px;
+}
+
+.get-started-button {
+  --background: var(--ion-color-primary);
+  --color: #fff;
+  --border-radius: 12px;
+  --padding-start: 32px;
+  --padding-end: 32px;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0;
+  
+  ion-icon {
+    margin-left: 8px;
+  }
 }
 
 .login-button {
@@ -31,5 +85,71 @@ p {
 
   &:hover {
     background-color: #2980b9;
+  }
+}
+
+// Navigation Styles
+.page-navigation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.progress-dots {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ion-color-medium);
+  opacity: 0.3;
+
+  &.active {
+    opacity: 1;
+    background: var(--ion-color-primary);
+  }
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px;
+}
+
+.back-button {
+  --color: var(--ion-color-medium);
+  font-weight: 500;
+  
+  ion-icon {
+    margin-right: 8px;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+.next-button {
+  --background: var(--ion-color-primary);
+  --color: #fff;
+  --border-radius: 12px;
+  --padding-start: 32px;
+  --padding-end: 32px;
+  font-weight: 600;
+  
+  ion-icon {
+    margin-left: 8px;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
   }
 } 

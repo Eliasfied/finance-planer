@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { FinancialDataService } from '../../services/financial-data.service';
 import { FinancialEntry } from '../../models/financial-data.interface';
+import { ProgressDotsComponent } from '../../components/progress-dots/progress-dots.component';
 
 // Register the icons
 addIcons({ trashOutline, arrowForwardOutline });
@@ -15,7 +16,7 @@ addIcons({ trashOutline, arrowForwardOutline });
 @Component({
   selector: 'app-income-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule, ProgressDotsComponent],
   templateUrl: './income-form.component.html',
   styleUrls: ['./income-form.component.scss']
 })
@@ -108,5 +109,9 @@ export class IncomeFormComponent implements OnInit {
 
   continueToNext() {
     this.router.navigate(['/finance-method']);
+  }
+
+  navigateBack() {
+    this.router.navigate(['/welcome']);
   }
 } 

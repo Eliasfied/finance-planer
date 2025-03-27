@@ -1,9 +1,8 @@
 <ion-content class="ion-padding">
   <div class="form-container">
     <!-- Header -->
-    <div class="welcome-header">
-      <h1>Add Your Income Sources 💰</h1>
-      <p>Let's start by adding your monthly income sources.</p>
+    <div class="illustration">
+      <img src="assets/images/income-illustration.jpg" alt="Finance Management Illustration">
     </div>
 
     <!-- Income Table -->
@@ -63,16 +62,12 @@
 
     <!-- Navigation -->
     <div class="page-navigation">
-      <div class="progress-dots">
-        <div class="dot active"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-      </div>
+      <app-progress-dots [currentStep]="1"></app-progress-dots>
       <div class="nav-buttons">
         <ion-button 
           class="back-button" 
           fill="clear"
-          disabled>
+          (click)="navigateBack()">
           <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
           Previous
         </ion-button>
