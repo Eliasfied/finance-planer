@@ -1,42 +1,54 @@
 <ion-content class="ion-padding">
   <div class="form-container">
-    <!-- Header -->
-    <div class="illustration">
-      <img src="assets/images/income-illustration.jpg" alt="Finance Management Illustration">
-    </div>
-
-    <!-- Income Table -->
+    <!-- Income Table Section -->
     <div class="income-table">
-      <h2>Your Income Sources</h2>
+      <div class="income-header">
+        <ion-icon name="wallet-outline"></ion-icon>
+        <span>Incomes</span>
+      </div>
+      
       <div *ngIf="savedIncomes.length === 0" class="empty-state">
-        <p>No income sources added yet. Add your first income source below.</p>
+        <p>No income sources added yet...</p>
       </div>
       <ion-list *ngIf="savedIncomes.length > 0">
-        <ion-item color="primary" *ngFor="let income of savedIncomes; let i=index">
-          <ion-label>
-            <h3>{{income.name}}</h3>
-            <p>{{income.amount | currency:'EUR'}}</p>
-          </ion-label>
-          <ion-button slot="end" 
-                      fill="clear" 
-                      color="light" 
-                      (click)="removeIncome(i)">
-            <ion-icon name="trash-outline"></ion-icon>
-          </ion-button>
+        <ion-item *ngFor="let income of savedIncomes" button detail (click)="viewIncomeDetails(income)">
+          <div class="income-item">
+            <div class="income-icon">
+              <ion-icon name="business-outline"></ion-icon>
+            </div>
+            <div class="income-details">
+              <h3>{{income.name}}</h3>
+              <p class="subtitle">{{income.type}}</p>
+            </div>
+            <div class="income-amount">
+              <span class="amount">{{income.amount | number:'1.2-2'}} €</span>
+              <span class="period">monthly</span>
+            </div>
+          </div>
         </ion-item>
       </ion-list>
     </div>
 
-    <!-- Add New Income Form -->
+    <!-- Add New Income Section -->
+    <div class="header-group">
+    </div>
     <div class="add-income-form">
-      <h2>Add New Income Source</h2>
       <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <label>Income Source</label>
+          <label>Name</label>
           <ion-input 
             class="custom-input"
-            formControlName="source" 
-            placeholder="e.g., Salary, Freelance, Business">
+            formControlName="name" 
+            placeholder="e.g., Gardener, Software Engineer">
+          </ion-input>
+        </div>
+
+        <div class="form-group">
+          <label>Type</label>
+          <ion-input 
+            class="custom-input"
+            formControlName="type" 
+            placeholder="e.g., Salary, Freelance">
           </ion-input>
         </div>
 
@@ -51,11 +63,12 @@
           </ion-input>
         </div>
 
-        <ion-button expand="block" 
+        <ion-button class="submit-button" 
+                  expand="block"
                   type="submit" 
-                  [disabled]="!incomeForm.valid"
-                  class="submit-button">
-          Add Income Source
+                  [disabled]="!incomeForm.valid">
+          <ion-icon name="add" slot="start"></ion-icon>
+          Add
         </ion-button>
       </form>
     </div>

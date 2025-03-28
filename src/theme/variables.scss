@@ -1,2 +1,100 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+
+:root {
+  /** primary **/
+  --ion-color-primary: #3880ff;
+  --ion-color-primary-rgb: 56, 128, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #3171e0;
+  --ion-color-primary-tint: #78bcf7;
+
+  /** light **/
+  --ion-color-light: #f8f9fa;
+  --ion-color-light-rgb: 248, 249, 250;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #e9eaeb;
+  --ion-color-light-tint: #f9fafb;
+
+  /** medium **/
+  --ion-color-medium: #92949c;
+  --ion-color-medium-rgb: 146, 148, 156;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #808289;
+  --ion-color-medium-tint: #9d9fa6;
+
+  /** dark **/
+  --ion-color-dark: #222428;
+  --ion-color-dark-rgb: 34, 36, 40;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #1e2023;
+  --ion-color-dark-tint: #383a3e;
+
+  /** danger **/
+  --ion-color-danger: #eb445a;
+  --ion-color-danger-rgb: 235, 68, 90;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #cf3c4f;
+  --ion-color-danger-tint: #ed576b;
+
+  /** Custom Background **/
+  --ion-background-color: #f1f1f1;
+  --ion-background-color-rgb: 242, 242, 247;
+
+  /** Custom Card Styles **/
+  --ion-card-background: #ffffff;
+  --ion-item-background: #ffffff;
+  --ion-toolbar-background: #ffffff;
+  --ion-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  /** Custom Typography **/
+  --page-title-size: 28px;
+  --page-title-weight: 700;
+  --page-title-color: var(--ion-color-dark);
+  
+  --page-subtitle-size: 15px;
+  --page-subtitle-weight: 400;
+  --page-subtitle-color: var(--ion-color-medium);
+  
+  --section-title-size: 20px;
+  --section-title-weight: 600;
+  --section-title-color: var(--ion-color-dark);
+  
+  --section-subtitle-size: 14px;
+  --section-subtitle-weight: 400;
+  --section-subtitle-color: var(--ion-color-medium);
+}
+
+// Global Typography Classes
+.page-title {
+  font-size: var(--page-title-size);
+  font-weight: var(--page-title-weight);
+  color: var(--page-title-color);
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: var(--page-subtitle-size);
+  font-weight: var(--page-subtitle-weight);
+  color: var(--page-subtitle-color);
+  margin: 4px 0 0 0;
+}
+
+.section-title {
+  font-size: var(--section-title-size);
+  font-weight: var(--section-title-weight);
+  color: var(--section-title-color);
+  margin: 0;
+}
+
+.section-subtitle {
+  font-size: var(--section-subtitle-size);
+  font-weight: var(--section-subtitle-weight);
+  color: var(--section-subtitle-color);
+  margin: 4px 0 0 0;
+}

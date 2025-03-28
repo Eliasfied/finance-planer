@@ -1,40 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { addIcons } from 'ionicons';
-import { trashOutline, arrowForwardOutline } from 'ionicons/icons';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
-import { FinancialDataService } from '../../services/financial-data.service';
-import { FinancialEntry } from '../../models/financial-data.interface';
+import { Income } from '../../interfaces/income.interface';
 import { ProgressDotsComponent } from '../../components/progress-dots/progress-dots.component';
+import { IncomeService } from '../../services/income.service';
+import { addIcons } from 'ionicons';
+import { 
+  businessOutline,
+  add,
+  arrowBackOutline
+} from 'ionicons/icons';
+import { Subscription } from 'rxjs';
 
-// Register the icons
-addIcons({ trashOutline, arrowForwardOutline });
+// Register Ionicons
+addIcons({
+  businessOutline,
+  add,
+  arrowBackOutline
+});
 
 @Component({
   selector: 'app-income-form',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule, ProgressDotsComponent],
   templateUrl: './income-form.component.html',
-  styleUrls: ['./income-form.component.scss']
+  styleUrls: ['./income-form.component.scss'],
+  standalone: true,
+  imports: [CommonModule, IonicModule, ReactiveFormsModule, ProgressDotsComponent]
 })
-export class IncomeFormComponent implements OnInit {
+export class IncomeFormComponent implements OnInit, OnDestroy {
   incomeForm: FormGroup;
+  savedIncomes: Income[] = [];
   currentUserId: string | null = null;
   isSubmitting = false;
-  savedIncomes: FinancialEntry[] = [];
+  private incomeChangesSub?: Subscription;
 
   constructor(
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private router: Router,
     private auth: Auth,
-    private financialDataService: FinancialDataService
+    private incomeService: IncomeService
   ) {
-    this.incomeForm = this.fb.group({
-      source: ['', Validators.required],
-      amount: [null, [Validators.required, Validators.min(0)]]
+    this.incomeForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      type: ['', Validators.required],
+      amount: ['', [Validators.required, Validators.min(0)]]
     });
 
     // Get current user
@@ -47,6 +58,11 @@ export class IncomeFormComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     });
+
+    // Subscribe to income changes
+    this.incomeChangesSub = this.incomeService.incomeChanges$.subscribe(() => {
+      this.loadSavedIncomes();
+    });
   }
 
   async ngOnInit() {
@@ -55,11 +71,17 @@ export class IncomeFormComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    if (this.incomeChangesSub) {
+      this.incomeChangesSub.unsubscribe();
+    }
+  }
+
   async loadSavedIncomes() {
     if (!this.currentUserId) return;
     try {
-      const data = await this.financialDataService.getFinancialData(this.currentUserId);
-      this.savedIncomes = data?.incomes || [];
+      this.savedIncomes = await this.incomeService.getIncomes(this.currentUserId);
+      console.log('Saved incomes:', this.savedIncomes);
     } catch (error) {
       console.error('Error loading incomes:', error);
     }
@@ -68,26 +90,21 @@ export class IncomeFormComponent implements OnInit {
   async onSubmit() {
     if (!this.currentUserId) {
       console.error('No user logged in');
-      this.router.navigate(['/finance-method']);
+      this.router.navigate(['/login']);
       return;
     }
 
     if (this.incomeForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
       try {
-        const incomeEntry: FinancialEntry = {
-          name: this.incomeForm.get('source')?.value,
-          amount: Number(this.incomeForm.get('amount')?.value)
+        const newIncome = {
+          name: this.incomeForm.value.name,
+          type: this.incomeForm.value.type,
+          amount: Number(this.incomeForm.value.amount),
+          userId: this.currentUserId
         };
 
-        // Save the income entry
-        await this.financialDataService.addIncome(this.currentUserId, incomeEntry);
-        console.log('Saved income entry:', incomeEntry);
-
-        // Add to local array
-        this.savedIncomes.push(incomeEntry);
-
-        // Reset the form
+        await this.incomeService.addIncome(this.currentUserId, newIncome);
         this.incomeForm.reset();
       } catch (error) {
         console.error('Error saving income:', error);
@@ -97,21 +114,27 @@ export class IncomeFormComponent implements OnInit {
     }
   }
 
-  async removeIncome(index: number) {
+  async removeIncome(income: Income) {
     if (!this.currentUserId) return;
     try {
-      await this.financialDataService.removeEntry(this.currentUserId, 'incomes', index);
-      this.savedIncomes.splice(index, 1);
+      await this.incomeService.removeIncome(income.id);
+      this.savedIncomes = this.savedIncomes.filter(i => i.id !== income.id);
     } catch (error) {
       console.error('Error removing income:', error);
     }
   }
 
-  continueToNext() {
-    this.router.navigate(['/finance-method']);
+  viewIncomeDetails(income: Income) {
+    this.router.navigate(['/income', income.id]);
   }
 
   navigateBack() {
     this.router.navigate(['/welcome']);
+  }
+
+  continueToNext() {
+    if (this.savedIncomes.length > 0) {
+      this.router.navigate(['/finance-method']);
+    }
   }
 } 

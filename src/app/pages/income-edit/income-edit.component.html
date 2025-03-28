@@ -1,0 +1,49 @@
+<ion-content>
+  <div class="nav-header">
+    <div class="back-button" (click)="navigateBack()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </div>
+    <h2>Edit income</h2>
+  </div>
+
+  <div class="page-header">
+    <h1>Details</h1>
+    <a class="save-link" (click)="onSubmit()" [class.disabled]="!incomeForm.valid || isSaving">
+      Done
+    </a>
+  </div>
+
+  <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading && income">
+    <div class="form-field-card">
+      <ion-text color="medium">Income source</ion-text>
+      <ion-input 
+        class="custom-input"
+        formControlName="name">
+      </ion-input>
+    </div>
+    <div class="form-field-card">
+      <ion-text color="medium">Type</ion-text>
+      <ion-input 
+        class="custom-input"
+        formControlName="type">
+      </ion-input>
+      <ion-icon name="chevron-down-outline" slot="end"></ion-icon>
+    </div>
+    <div class="form-field-card">
+      <ion-text color="medium">Amount</ion-text>
+      <div class="amount-input">
+        <ion-input 
+          class="custom-input"
+          type="number"
+          formControlName="amount">
+        </ion-input>
+        <span class="currency">€</span>
+      </div>
+    </div>
+
+  </form>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner></ion-spinner>
+  </div>
+</ion-content> 
