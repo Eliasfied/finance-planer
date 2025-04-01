@@ -7,7 +7,7 @@
       <div class="amount-item">
         <span class="label">Total</span>
         <span class="amount positive">{{totalMonthlyIncome | number:'1.2-2'}} €</span>
-        <span class="sublabel">Monatliche Einnahmen</span>
+        <span class="sublabel">Monthly Income</span>
       </div>
     </div>
   </div>
@@ -17,11 +17,11 @@
       <div class="income-table">
         <div class="income-header">
           <ion-icon name="wallet-outline"></ion-icon>
-          <span>Einnahmen</span>
+          <span>Incomes</span>
         </div>
         
         <div *ngIf="savedIncomes.length === 0" class="empty-state">
-          <p>Noch keine Einnahmen hinzugefügt</p>
+          <p>No income sources added yet...</p>
         </div>
         <ion-list *ngIf="savedIncomes.length > 0">
           <ion-item *ngFor="let income of savedIncomes" button detail (click)="viewIncomeDetails(income)">
@@ -35,7 +35,7 @@
               </div>
               <div class="income-amount">
                 <span class="amount">{{income.amount | number:'1.2-2'}} €</span>
-                <span class="period">monatlich</span>
+                <span class="period">monthly</span>
               </div>
             </div>
           </ion-item>
@@ -50,13 +50,13 @@
             fill="clear"
             (click)="navigateBack()">
             <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
-            Zurück
+            Previous
           </ion-button>
           <ion-button 
             class="next-button" 
             [disabled]="savedIncomes.length === 0"
             (click)="continueToNext()">
-            Weiter
+            Next
             <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
           </ion-button>
         </div>
