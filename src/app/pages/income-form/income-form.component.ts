@@ -77,7 +77,7 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
       cssClass: 'income-modal'
     });
 
-    modal.onDidDismiss().then((result) => {
+    modal.onDidDismiss().then(async (result) => {
       if (result.data && this.currentUserId) {
         const newIncome: Omit<Income, 'id'> = {
           name: result.data.name,
@@ -86,7 +86,8 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
           userId: this.currentUserId
         };
         
-        this.incomeService.addIncome(this.currentUserId, newIncome);
+        await this.incomeService.addIncome(this.currentUserId, newIncome);
+        this.savedIncomes.push(newIncome as Income);
       }
     });
 
