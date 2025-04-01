@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Neue Einnahme</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()" class="add-income-form">
+    <div class="form-group">
+      <label>Einnahmequelle</label>
+      <ion-input
+        class="custom-input"
+        formControlName="name"
+        placeholder="z.B. Gehalt, Nebenjob">
+      </ion-input>
+    </div>
+
+    <div class="form-group">
+      <label>Kategorie</label>
+      <ion-input
+        class="custom-input"
+        formControlName="type"
+        placeholder="z.B. Festanstellung, Freelance">
+      </ion-input>
+    </div>
+
+    <div class="form-group">
+      <label>Betrag</label>
+      <ion-input
+        class="custom-input"
+        type="number"
+        formControlName="amount"
+        placeholder="0.00">
+        <span slot="end" class="currency">€</span>
+      </ion-input>
+    </div>
+
+    <ion-button
+      expand="block"
+      type="submit"
+      class="submit-button"
+      [disabled]="!incomeForm.valid">
+      Hinzufügen
+    </ion-button>
+  </form>
+</ion-content> 

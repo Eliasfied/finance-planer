@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Income } from '../../interfaces/income.interface';
@@ -11,7 +10,11 @@ import { addIcons } from 'ionicons';
 import { 
   businessOutline,
   add,
-  arrowBackOutline
+  arrowBackOutline,
+  walletOutline,
+  trendingDownOutline,
+  trendingUpOutline,
+  helpCircleOutline
 } from 'ionicons/icons';
 import { Subscription } from 'rxjs';
 
@@ -19,7 +22,11 @@ import { Subscription } from 'rxjs';
 addIcons({
   businessOutline,
   add,
-  arrowBackOutline
+  arrowBackOutline,
+  walletOutline,
+  trendingDownOutline,
+  trendingUpOutline,
+  helpCircleOutline
 });
 
 @Component({
@@ -27,27 +34,24 @@ addIcons({
   templateUrl: './income-form.component.html',
   styleUrls: ['./income-form.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, ReactiveFormsModule, ProgressDotsComponent]
+  imports: [
+    CommonModule, 
+    IonicModule, 
+    ProgressDotsComponent
+  ]
 })
 export class IncomeFormComponent implements OnInit, OnDestroy {
-  incomeForm: FormGroup;
   savedIncomes: Income[] = [];
+  totalMonthlyIncome: number = 0;
   currentUserId: string | null = null;
-  isSubmitting = false;
   private incomeChangesSub?: Subscription;
 
   constructor(
-    private formBuilder: FormBuilder,
     private router: Router,
     private auth: Auth,
-    private incomeService: IncomeService
+    private incomeService: IncomeService,
+    private modalCtrl: ModalController
   ) {
-    this.incomeForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      type: ['', Validators.required],
-      amount: ['', [Validators.required, Validators.min(0)]]
-    });
-
     // Get current user
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
@@ -63,6 +67,34 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
     this.incomeChangesSub = this.incomeService.incomeChanges$.subscribe(() => {
       this.loadSavedIncomes();
     });
+  }
+
+  async openAddIncomeModal() {
+    const { AddIncomeModalComponent } = await import('./add-income-modal/add-income-modal.component');
+    
+    const modal = await this.modalCtrl.create({
+      component: AddIncomeModalComponent,
+      cssClass: 'income-modal'
+    });
+
+    modal.onDidDismiss().then((result) => {
+      if (result.data && this.currentUserId) {
+        const newIncome: Omit<Income, 'id'> = {
+          name: result.data.name,
+          type: result.data.type,
+          amount: Number(result.data.amount),
+          userId: this.currentUserId
+        };
+        
+        this.incomeService.addIncome(this.currentUserId, newIncome);
+      }
+    });
+
+    return await modal.present();
+  }
+
+  getTotalIncome(): number {
+    return this.savedIncomes.reduce((total, income) => total + income.amount, 0);
   }
 
   async ngOnInit() {
@@ -81,47 +113,14 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
     if (!this.currentUserId) return;
     try {
       this.savedIncomes = await this.incomeService.getIncomes(this.currentUserId);
-      console.log('Saved incomes:', this.savedIncomes);
+      this.calculateTotalIncome();
     } catch (error) {
       console.error('Error loading incomes:', error);
     }
   }
 
-  async onSubmit() {
-    if (!this.currentUserId) {
-      console.error('No user logged in');
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    if (this.incomeForm.valid && !this.isSubmitting) {
-      this.isSubmitting = true;
-      try {
-        const newIncome = {
-          name: this.incomeForm.value.name,
-          type: this.incomeForm.value.type,
-          amount: Number(this.incomeForm.value.amount),
-          userId: this.currentUserId
-        };
-
-        await this.incomeService.addIncome(this.currentUserId, newIncome);
-        this.incomeForm.reset();
-      } catch (error) {
-        console.error('Error saving income:', error);
-      } finally {
-        this.isSubmitting = false;
-      }
-    }
-  }
-
-  async removeIncome(income: Income) {
-    if (!this.currentUserId) return;
-    try {
-      await this.incomeService.removeIncome(income.id);
-      this.savedIncomes = this.savedIncomes.filter(i => i.id !== income.id);
-    } catch (error) {
-      console.error('Error removing income:', error);
-    }
+  calculateTotalIncome() {
+    this.totalMonthlyIncome = this.getTotalIncome();
   }
 
   viewIncomeDetails(income: Income) {

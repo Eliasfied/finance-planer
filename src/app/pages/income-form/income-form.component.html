@@ -1,97 +1,72 @@
-<ion-content class="ion-padding">
-  <div class="form-container">
-    <!-- Income Table Section -->
-    <div class="income-table">
-      <div class="income-header">
-        <ion-icon name="wallet-outline"></ion-icon>
-        <span>Incomes</span>
-      </div>
-      
-      <div *ngIf="savedIncomes.length === 0" class="empty-state">
-        <p>No income sources added yet...</p>
-      </div>
-      <ion-list *ngIf="savedIncomes.length > 0">
-        <ion-item *ngFor="let income of savedIncomes" button detail (click)="viewIncomeDetails(income)">
-          <div class="income-item">
-            <div class="income-icon">
-              <ion-icon name="business-outline"></ion-icon>
-            </div>
-            <div class="income-details">
-              <h3>{{income.name}}</h3>
-              <p class="subtitle">{{income.type}}</p>
-            </div>
-            <div class="income-amount">
-              <span class="amount">{{income.amount | number:'1.2-2'}} €</span>
-              <span class="period">monthly</span>
-            </div>
-          </div>
-        </ion-item>
-      </ion-list>
+<ion-content>
+  <div class="header-section">
+    <div class="help-button">
+      <ion-icon name="help-circle-outline"></ion-icon>
     </div>
-
-    <!-- Add New Income Section -->
-    <div class="header-group">
-    </div>
-    <div class="add-income-form">
-      <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label>Name</label>
-          <ion-input 
-            class="custom-input"
-            formControlName="name" 
-            placeholder="e.g., Gardener, Software Engineer">
-          </ion-input>
-        </div>
-
-        <div class="form-group">
-          <label>Type</label>
-          <ion-input 
-            class="custom-input"
-            formControlName="type" 
-            placeholder="e.g., Salary, Freelance">
-          </ion-input>
-        </div>
-
-        <div class="form-group">
-          <label>Amount</label>
-          <ion-input 
-            class="custom-input"
-            type="number" 
-            formControlName="amount" 
-            placeholder="0.00">
-            <ion-text slot="end" class="currency">€</ion-text>
-          </ion-input>
-        </div>
-
-        <ion-button class="submit-button" 
-                  expand="block"
-                  type="submit" 
-                  [disabled]="!incomeForm.valid">
-          <ion-icon name="add" slot="start"></ion-icon>
-          Add
-        </ion-button>
-      </form>
-    </div>
-
-    <!-- Navigation -->
-    <div class="page-navigation">
-      <app-progress-dots [currentStep]="1"></app-progress-dots>
-      <div class="nav-buttons">
-        <ion-button 
-          class="back-button" 
-          fill="clear"
-          (click)="navigateBack()">
-          <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
-          Previous
-        </ion-button>
-        <ion-button 
-          class="next-button" 
-          [disabled]="savedIncomes.length === 0"
-          (click)="continueToNext()">
-          Next
-          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
-        </ion-button>
+    <div class="summary-card">
+      <div class="amount-item">
+        <span class="label">Total</span>
+        <span class="amount positive">{{totalMonthlyIncome | number:'1.2-2'}} €</span>
+        <span class="sublabel">Monatliche Einnahmen</span>
       </div>
     </div>
   </div>
+
+  <div class="content-section">
+    <div class="form-container">
+      <div class="income-table">
+        <div class="income-header">
+          <ion-icon name="wallet-outline"></ion-icon>
+          <span>Einnahmen</span>
+        </div>
+        
+        <div *ngIf="savedIncomes.length === 0" class="empty-state">
+          <p>Noch keine Einnahmen hinzugefügt</p>
+        </div>
+        <ion-list *ngIf="savedIncomes.length > 0">
+          <ion-item *ngFor="let income of savedIncomes" button detail (click)="viewIncomeDetails(income)">
+            <div class="income-item">
+              <div class="income-icon">
+                <ion-icon name="business-outline"></ion-icon>
+              </div>
+              <div class="income-details">
+                <h3>{{income.name}}</h3>
+                <p class="subtitle">{{income.type}}</p>
+              </div>
+              <div class="income-amount">
+                <span class="amount">{{income.amount | number:'1.2-2'}} €</span>
+                <span class="period">monatlich</span>
+              </div>
+            </div>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <div class="page-navigation">
+        <app-progress-dots [currentStep]="1"></app-progress-dots>
+        <div class="nav-buttons">
+          <ion-button 
+            class="back-button" 
+            fill="clear"
+            (click)="navigateBack()">
+            <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+            Zurück
+          </ion-button>
+          <ion-button 
+            class="next-button" 
+            [disabled]="savedIncomes.length === 0"
+            (click)="continueToNext()">
+            Weiter
+            <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openAddIncomeModal()" color="primary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content> 

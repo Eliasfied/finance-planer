@@ -19,7 +19,7 @@ alwaysApply: true
    Favor component composition over inheritance to enhance modularity, enabling reusability and easy maintenance.
 
 4. **Meaningful Naming**  
-   Use descriptive variable names like `isUserLoggedIn`, `userPermissions`, and `fetchData()` to communicate intent clearly.
+   Use descriptive variable names like `isUserLoggedIn`, `userPermissions`, and `fetchData()` to communicate intent clearly. All plain text and all function/variables should be named in English
 
 5. **File Naming**  
    Enforce kebab-case naming for files (e.g., `user-profile.component.ts`) and match Angular's conventions for file suffixes (e.g., `.component.ts`, `.service.ts`, etc.).
