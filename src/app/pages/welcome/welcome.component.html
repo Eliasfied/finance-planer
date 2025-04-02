@@ -1,26 +1,25 @@
 <ion-content class="ion-padding">
   <div class="welcome-container">
-    <!-- Main Content -->
-    <div class="welcome-content">
-      <div class="illustration">
-        <img src="assets/images/welcome-illustration.jpg" alt="Finance Management Illustration">
-      </div>
-      
-      <div class="content-text">
-        <h1>Smart Finance Management</h1>
-        <p>Track your income, expenses, and savings goals all in one place. Let's make managing your finances simple and effective!</p>
-      </div>
+    <!-- Illustration -->
+    <div class="illustration">
+      <img src="assets/images/welcome-illustration.jpg" alt="Finance Management Illustration">
     </div>
 
-    <!-- Navigation -->
+    <!-- Content -->
+    <div class="content">
+      <h1>Easy<br>Finance Tool</h1>
+      <p>Track your income, expenses, and savings goals all in one place. Let's make managing your finances simple and effective!</p>
+    </div>
+
+    <!-- Action Button -->
+    <ion-button expand="block" class="get-started-button" (click)="navigateToIncomeForm()">
+      Get started
+      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+    </ion-button>
+
+    <!-- Progress Dots -->
     <div class="page-navigation">
       <app-progress-dots [currentStep]="0"></app-progress-dots>
-      <ion-button 
-        class="get-started-button"
-        (click)="navigateToIncomeForm()">
-        Get Started
-        <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
-      </ion-button>
     </div>
   </div>
 </ion-content> 

@@ -14,7 +14,9 @@ import {
   walletOutline,
   trendingDownOutline,
   trendingUpOutline,
-  helpCircleOutline
+  helpCircleOutline,
+  chevronBackOutline,
+  chevronForwardOutline
 } from 'ionicons/icons';
 import { Subscription } from 'rxjs';
 
@@ -26,7 +28,9 @@ addIcons({
   walletOutline,
   trendingDownOutline,
   trendingUpOutline,
-  helpCircleOutline
+  helpCircleOutline,
+  chevronBackOutline,
+  chevronForwardOutline
 });
 
 @Component({

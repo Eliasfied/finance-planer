@@ -21,51 +21,6 @@
   }
 }
 
-.summary-card {
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
-  margin: 0 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  bottom: -40px;
-  left: 0;
-  right: 0;
-  z-index: 10;
-
-  .amount-item {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-
-    .label {
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 11px;
-      color: var(--ion-color-medium);
-      margin-bottom: 2px;
-    }
-
-    .amount {
-      font-size: 24px;
-      font-weight: 600;
-      line-height: 1.2;
-      
-      &.positive {
-        color: var(--ion-color-success);
-      }
-    }
-
-    .sublabel {
-      font-size: 12px;
-      color: var(--ion-color-medium);
-      margin-top: 2px;
-    }
-  }
-}
-
 .content-section {
   display: flex;
   border-radius: 24px 24px 0 0;
@@ -83,162 +38,158 @@
   gap: 24px;
 }
 
-.income-table {
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.page-navigation {
+  position: fixed;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+}
 
-  .income-header {
-    background: var(--ion-color-primary-tint);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: white;
-    font-size: 16px;
+ion-content {
+  --background: #FFFFFF;
+}
+
+.nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  
+  h1 {
+    font-size: 20px;
     font-weight: 600;
-
+    margin: 0;
+    color: var(--ion-color-dark);
+  }
+  
+  .nav-button {
+    --color: var(--ion-color-medium);
+    --padding-start: 8px;
+    --padding-end: 8px;
+    font-weight: 500;
+    text-transform: none;
+    
     ion-icon {
-      font-size: 20px;
+      font-size: 24px;
     }
   }
+}
 
-  ion-list {
-    background: transparent;
-    padding: 16px;
-
-    ion-item {
-      --background: transparent;
-      --padding-start: 0;
-      --padding-end: 0;
-      --inner-padding-end: 0;
-      margin-bottom: 16px;
-      --border-style: none;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      .income-item {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        padding: 4px 0;
-        gap: 16px;
-
-        .income-icon {
-          width: 40px;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 8px;
-          flex-shrink: 0;
-          background: var(--ion-color-primary);
-          color: white;
-            
-          ion-icon {
-            font-size: 20px;
-          }
-        }
-
-        .income-details {
-          flex: 1;
-
-          h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin: 0 0 4px 0;
-            color: var(--ion-color-dark);
-          }
-
-          .subtitle {
-            font-size: 14px;
-            color: var(--ion-color-medium);
-            margin: 0;
-          }
-        }
-
-        .income-amount {
-          text-align: right;
-          
-          .amount {
-            display: block;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--ion-color-success);
-            margin-bottom: 4px;
-          }
-
-          .period {
-            display: block;
-            font-size: 14px;
-            color: var(--ion-color-medium);
-          }
-        }
-      }
-    }
+.total-income {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px;
+  
+  .amount {
+    font-size: 40px;
+    font-weight: 700;
+    color: #2FD05E;
+    margin-bottom: 8px;
   }
-
-  .empty-state {
-    text-align: center;
-    padding: 24px 16px;
+  
+  .label {
+    font-size: 16px;
     color: var(--ion-color-medium);
   }
 }
 
-.page-navigation {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  z-index: 100;
-}
-
-.nav-buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 0 16px;
-}
-
-.back-button {
-  --color: var(--ion-color-medium);
-  font-weight: 500;
+.income-list {
+  padding: 0 32px;
   
-  ion-icon {
-    margin-right: 8px;
-  }
-}
+  .income-card {
+    margin: 0 0 16px;
+    border-radius: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    background: white;
+    
+    ion-card-content {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
 
-.next-button {
-  --background: var(--ion-color-primary);
-  --color: #fff;
-  --border-radius: 12px;
-  --padding-start: 32px;
-  --padding-end: 32px;
-  font-weight: 600;
-  
-  ion-icon {
-    margin-left: 8px;
-  }
-
-  &[disabled] {
-    opacity: 0.5;
+    .income-icon {
+      background: #EDF2FF;
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+      flex-shrink: 0;
+      
+      ion-icon {
+        color: var(--ion-color-primary);
+        font-size: 24px;
+      }
+    }
+    
+    .income-details {
+      flex: 1;
+      
+      h2 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ion-color-dark);
+        margin: 0 0 0px;
+      }
+      
+      p {
+        font-size: 12px;
+        color: var(--ion-color-medium);
+        margin: 0;
+      }
+    }
+    
+    .income-amount {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-right: 16px;
+      
+      .amount {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2FD05E;
+        margin: 0;
+        line-height: 1.2;
+      }
+      
+      .period {
+        font-size: 12px;
+        color: var(--ion-color-medium);
+        margin: 0;
+        line-height: 1;
+      }
+    }
+    
+    .chevron {
+      color: var(--ion-color-medium);
+      font-size: 20px;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 }
 
 ion-fab {
+  margin-bottom: 80px;
+  
   ion-fab-button {
-    --border-radius: 12px;
-    margin-right: 16px;
+    --background: var(--ion-color-primary);
+    --box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.3);
+    width: 56px;
+    height: 56px;
+    --border-radius: 16px;
+    margin: 0 16px 16px 0;
   }
 } 
 

@@ -3,37 +3,54 @@
     <div class="help-button">
       <ion-icon name="help-circle-outline"></ion-icon>
     </div>
-    <div class="summary-card">
-      <div class="amount-item">
-        <span class="label">Total</span>
-        <span class="amount">{{getMethodTitle()}}</span>
-        <span class="sublabel">Distribution</span>
-      </div>
+    <div class="header-content">
+      <h1>Choose Your Method</h1>
     </div>
   </div>
 
   <div class="content-section">
     <div class="form-container">
-      <div class="method-card">
+      <!-- Recommended Method Card -->
+      <div class="method-card" [class.selected]="!isCustomizing" (click)="selectRecommendedMethod()">
+        <div class="recommended-tag">
+          <ion-icon name="checkmark-circle"></ion-icon>
+          <span>Recommended</span>
+        </div>
         <div class="method-details">
           <div class="method-item">
             <ion-icon name="cart-outline"></ion-icon>
-            <span class="value">{{financeMethodForm.get('expenses')?.value}}%</span>
+            <span class="value">75%</span>
             <span class="label">Expenses</span>
           </div>
           <div class="method-item">
             <ion-icon name="trending-up-outline"></ion-icon>
-            <span class="value">{{financeMethodForm.get('investments')?.value}}%</span>
+            <span class="value">15%</span>
             <span class="label">Investments</span>
           </div>
           <div class="method-item">
             <ion-icon name="wallet-outline"></ion-icon>
-            <span class="value">{{financeMethodForm.get('savings')?.value}}%</span>
+            <span class="value">10%</span>
             <span class="label">Savings</span>
           </div>
         </div>
+      </div>
 
-        <form [formGroup]="financeMethodForm" (ngSubmit)="onSubmit()">
+      <div class="divider">
+        <span>or</span>
+      </div>
+
+      <!-- Custom Method Card -->
+      <div class="method-card custom" [class.selected]="isCustomizing" [class.expanded]="isCustomizing">
+        <div class="method-header" (click)="toggleCustomization()">
+          <div class="header-content">
+            <h2>Custom Distribution</h2>
+            <p *ngIf="!isCustomizing">Create your own distribution</p>
+            <p *ngIf="isCustomizing">{{getMethodTitle()}}</p>
+          </div>
+          <ion-icon [name]="isCustomizing ? 'chevron-up' : 'chevron-down'"></ion-icon>
+        </div>
+
+        <form *ngIf="isCustomizing" [formGroup]="financeMethodForm" (ngSubmit)="onSubmit()" [@slideInOut]>
           <div class="slider-section">
             <div class="slider-item">
               <div class="item-header">
@@ -93,7 +110,7 @@
           </ion-button>
           <ion-button 
             class="next-button" 
-            [disabled]="!financeMethodForm.valid || getTotal() !== 100"
+            [disabled]="isCustomizing && getTotal() !== 100"
             (click)="onSubmit()">
             Next
             <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>

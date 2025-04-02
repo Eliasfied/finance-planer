@@ -3,7 +3,9 @@
   height: 15vh;
   position: relative;
   padding: 16px;
-  padding-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   .help-button {
     position: absolute;
@@ -19,46 +21,15 @@
       color: white;
     }
   }
-}
 
-.summary-card {
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
-  margin: 0 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  bottom: -40px;
-  left: 0;
-  right: 0;
-  z-index: 10;
-
-  .amount-item {
+  .header-content {
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
 
-    .label {
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 11px;
-      color: var(--ion-color-medium);
-      margin-bottom: 2px;
-    }
-
-    .amount {
+    h1 {
+      color: white;
       font-size: 24px;
       font-weight: 600;
-      line-height: 1.2;
-      color: var(--ion-color-dark);
-    }
-
-    .sublabel {
-      font-size: 12px;
-      color: var(--ion-color-medium);
-      margin-top: 2px;
+      margin: 0;
     }
   }
 }
@@ -67,8 +38,9 @@
   border-radius: 24px 24px 0 0;
   padding: 24px 16px;
   min-height: calc(80vh);
-  margin-top: 40px;
+  margin-top: 0;
   padding-bottom: 120px;
+  background: white;
 }
 
 .form-container {
@@ -81,6 +53,34 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &.selected {
+    border: 2px solid var(--ion-color-primary);
+  }
+
+  .recommended-tag {
+    position: absolute;
+    top: -10px;
+    right: 16px;
+    background: #4CD964;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 8px rgba(76, 217, 100, 0.3);
+
+    ion-icon {
+      font-size: 16px;
+    }
+  }
 
   .method-details {
     background: var(--ion-color-primary);
@@ -114,6 +114,41 @@
         color: rgba(255, 255, 255, 0.8);
         font-weight: normal;
         margin: 0;
+      }
+    }
+  }
+
+  &.custom {
+    .method-header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .header-content {
+        h2 {
+          margin: 0;
+          font-size: 18px;
+          font-weight: 600;
+          color: var(--ion-color-dark);
+        }
+
+        p {
+          margin: 4px 0 0 0;
+          font-size: 14px;
+          color: var(--ion-color-medium);
+        }
+      }
+
+      ion-icon {
+        font-size: 24px;
+        color: var(--ion-color-medium);
+      }
+    }
+
+    &.expanded {
+      .slider-section {
+        padding: 0 20px 20px;
       }
     }
   }
@@ -186,6 +221,39 @@
         }
       }
     }
+  }
+}
+
+.divider {
+  text-align: center;
+  margin: 24px 0;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 30px);
+    height: 1px;
+    background: var(--ion-color-medium-tint);
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::after {
+    right: 0;
+  }
+
+  span {
+    background: #f4f5f8;
+    padding: 0 16px;
+    color: var(--ion-color-medium);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
 }
 

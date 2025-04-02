@@ -2,7 +2,7 @@
   <div class="login-container">
     <!-- Header -->
     <div class="welcome-header">
-      <h1>Hi, Welcome Back! 👋</h1>
+      <h1>Hi, welcome back! 👋</h1>
       <p>Hello again, you've been missed!</p>
     </div>
 
@@ -14,7 +14,7 @@
           type="email" 
           [(ngModel)]="email" 
           name="email"
-          placeholder="sophat.leat@nintrea.live"
+          placeholder="Please enter your Email"
           class="custom-input">
         </ion-input>
       </div>
@@ -25,20 +25,17 @@
           [type]="showPassword ? 'text' : 'password'"
           [(ngModel)]="password" 
           name="password"
-          placeholder="Please Enter Your Password"
+          placeholder="Please enter your password"
           class="custom-input">
-          <ion-icon 
-            [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" 
-            slot="end"
-            (click)="togglePasswordVisibility()"
-            class="password-toggle">
-          </ion-icon>
         </ion-input>
       </div>
 
       <!-- Remember Me and Forgot Password -->
       <div class="remember-forgot">
-        <ion-checkbox [(ngModel)]="rememberMe" name="rememberMe">Remember Me</ion-checkbox>
+        <div class="remember-me">
+          <ion-checkbox [(ngModel)]="rememberMe" name="rememberMe"></ion-checkbox>
+          <span>Remember Me</span>
+        </div>
         <a class="forgot-password" (click)="handleForgotPassword()">Forgot Password</a>
       </div>
 
@@ -53,18 +50,16 @@
 
       <!-- Or With Divider -->
       <div class="divider">
-        <span class="line"></span>
-        <span class="or-text">Or With</span>
-        <span class="line"></span>
+        <span>Or With</span>
       </div>
 
       <!-- Social Login Buttons -->
       <div class="social-buttons">
-        <ion-button class="social-button google" (click)="handleGoogleLogin()">
+        <ion-button class="social-button" fill="outline" (click)="handleGoogleLogin()">
           <ion-icon name="logo-google" slot="start"></ion-icon>
           Google
         </ion-button>
-        <ion-button class="social-button facebook">
+        <ion-button class="social-button" fill="outline">
           <ion-icon name="logo-facebook" slot="start"></ion-icon>
           Facebook
         </ion-button>
@@ -72,7 +67,8 @@
 
       <!-- Sign Up Link -->
       <div class="signup-link">
-        Don't have an account? <a (click)="navigateToRegister()">Sign Up</a>
+        Don't have an account?
+        <a (click)="navigateToRegister()">Sign up!</a>
       </div>
     </form>
   </div>

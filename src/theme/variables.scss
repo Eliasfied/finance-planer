@@ -1,9 +1,13 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
 
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
 :root {
+  --ion-font-family: 'DM Sans', sans-serif;
+  
   /** primary **/
-  --ion-color-primary: #3880ff;
+  --ion-color-primary: #0015ff;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -56,15 +60,15 @@
   --page-title-size: 28px;
   --page-title-weight: 700;
   --page-title-color: var(--ion-color-dark);
-  
+
   --page-subtitle-size: 15px;
   --page-subtitle-weight: 400;
   --page-subtitle-color: var(--ion-color-medium);
-  
+
   --section-title-size: 20px;
   --section-title-weight: 600;
   --section-title-color: var(--ion-color-dark);
-  
+
   --section-subtitle-size: 14px;
   --section-subtitle-weight: 400;
   --section-subtitle-color: var(--ion-color-medium);

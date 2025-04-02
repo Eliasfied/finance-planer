@@ -57,14 +57,11 @@ export class FinanceMethodComponent implements OnInit {
   };
   currentUserId: string | null = null;
 
-
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private financialDataService: FinancialDataService,
-    private auth: Auth,
-
-
+    private auth: Auth
   ) {
     this.financeMethodForm = this.formBuilder.group({
       expenses: [this.defaultValues.expenses],
@@ -83,26 +80,20 @@ export class FinanceMethodComponent implements OnInit {
     });
   }
 
-
-
   ngOnInit() {
     // Listen to form changes to update the title
     this.financeMethodForm.valueChanges.subscribe(() => {
-      // Force change detection for the title
       this.getMethodTitle();
     });
   }
 
-  isDefaultMethod(): boolean {
-    const currentValues = this.financeMethodForm.value;
-    return currentValues.expenses === this.defaultValues.expenses &&
-           currentValues.investments === this.defaultValues.investments &&
-           currentValues.savings === this.defaultValues.savings;
-  }
-
-  getMethodTitle(): string {
-    const values = this.financeMethodForm.value;
-    return `${values.expenses}/${values.investments}/${values.savings} - Distribution`;
+  selectRecommendedMethod() {
+    this.isCustomizing = false;
+    this.financeMethodForm.patchValue({
+      expenses: this.defaultValues.expenses,
+      investments: this.defaultValues.investments,
+      savings: this.defaultValues.savings
+    });
   }
 
   toggleCustomization() {
@@ -110,6 +101,11 @@ export class FinanceMethodComponent implements OnInit {
       return; // Don't allow closing if total is not 100%
     }
     this.isCustomizing = !this.isCustomizing;
+  }
+
+  getMethodTitle(): string {
+    const values = this.financeMethodForm.value;
+    return `${values.expenses}/${values.investments}/${values.savings}`;
   }
 
   getTotal(): number {
@@ -123,8 +119,12 @@ export class FinanceMethodComponent implements OnInit {
 
   onSubmit() {
     if (this.financeMethodForm.valid && this.getTotal() === 100) {
-      this.financialDataService.addDistributionValues(this.currentUserId as string, this.financeMethodForm.value.expenses, this.financeMethodForm.value.investments, this.financeMethodForm.value.savings);
-      
+      this.financialDataService.addDistributionValues(
+        this.currentUserId as string,
+        this.financeMethodForm.value.expenses,
+        this.financeMethodForm.value.investments,
+        this.financeMethodForm.value.savings
+      );
       this.router.navigate(['/expenses-form']);
     }
   }
