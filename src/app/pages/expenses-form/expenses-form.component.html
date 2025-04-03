@@ -1,85 +1,77 @@
- <ion-content class="ion-padding">
-  <div class="expenses-container">
-   
-    <!-- Budget Progress -->
-    <div class="budget-card">
-      <div class="budget-info">
-        <div class="left-to-spend">
-          <span class="label">Left to spend</span>
-          <span class="amount">$738</span>
-        </div>
-        <div class="monthly-budget">
-          <span class="label">Monthly budget</span>
-          <span class="amount">$2,550</span>
-        </div>
-      </div>
-      <div class="progress-bar">
-        <div class="progress" style="width: 71%;">
-          <div class="progress-segment spent" style="width: 60%;"></div>
-          <div class="progress-segment remaining" style="width: 11%;"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Expense Categories -->
-    <div class="expense-categories">
-      <!-- Auto & Transport Category -->
-      <div class="category-group">
-        <div class="category-header">
-          <div class="category-icon auto">
-            <ion-icon name="car-outline"></ion-icon>
-          </div>
-          <div class="category-info">
-            <h3>Auto & transport</h3>
-            <span class="amount">$700</span>
-          </div>
-        </div>
-        
-        <!-- Category Items -->
-        <div class="category-items">
-          <div class="expense-item">
-            <span class="item-name">Auto & transport</span>
-            <span class="item-amount">$350</span>
-          </div>
-          <div class="expense-item">
-            <span class="item-name">Auto insurance</span>
-            <span class="item-amount">$250</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bills & Utilities Category -->
-      <div class="category-group">
-        <div class="category-header">
-          <div class="category-icon bills">
-            <ion-icon name="receipt-outline"></ion-icon>
-          </div>
-          <div class="category-info">
-            <h3>Bill & Utilities</h3>
-            <span class="amount">$320</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="page-navigation">
-      <app-progress-dots [currentStep]="2"></app-progress-dots>
-      <div class="nav-buttons">
-        <ion-button 
-          class="back-button" 
-          fill="clear"
-          (click)="navigateBack()">
-          <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
-          Previous
-        </ion-button>
-        <ion-button 
-          class="next-button" 
-          (click)="onSubmit()">
-          Next
-          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
-        </ion-button>
-      </div>
-    </div>
+<ion-content>
+  <!-- Header with Navigation -->
+  <div class="nav-header">
+    <ion-button fill="clear" class="nav-button" (click)="goToPrevious()">
+      <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+      Previous
+    </ion-button>
+    <h1>Expenses</h1>
+    <ion-button fill="clear" class="nav-button" (click)="goToNext()">
+      Next
+      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+    </ion-button>
   </div>
 
- 
+  <!-- Total Expenses Section -->
+  <div class="total-expenses">
+    <span class="amount">{{ totalPlannedAmount | number:'1.0-0' }} €</span>
+    <span class="label">Already planned</span>
+  </div>
+
+  <!-- Budget Info Card -->
+  <ion-card class="budget-card">
+    <ion-card-content>
+      <div class="budget-info">
+        <div class="budget-item">
+          <span class="label">Left to spend</span>
+          <span class="amount">{{ leftToSpend | number:'1.0-0' }} €</span>
+        </div>
+        <div class="budget-item">
+          <span class="label">Monthly budget</span>
+          <span class="amount">{{ monthlyBudget | number:'1.0-0' }} €</span>
+        </div>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress" [style.width.%]="getProgressPercentage()"></div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Expenses List -->
+  <div class="expenses-list">
+    <ion-card *ngFor="let category of expenseCategories" class="category-card">
+      <ion-card-content>
+        <!-- Category Header -->
+        <div class="category-header">
+          <div class="category-icon">
+            <ion-icon [name]="category.icon"></ion-icon>
+          </div>
+          <span class="category-name">{{category.name}}</span>
+          <span class="category-amount">{{category.totalAmount | number:'1.0-0'}} €</span>
+        </div>
+
+        <!-- Category Expenses -->
+        <div class="expenses-container">
+          <div *ngFor="let expense of category.expenses" class="expense-item">
+            <span class="expense-name">{{ expense.name }}</span>
+            <span class="expense-amount">{{ expense.amount | number:'1.0-0'}} €</span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Add Expense FAB -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addNewExpense()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Progress Dots -->
+  <div class="page-navigation">
+    <app-progress-dots [currentStep]="3"></app-progress-dots>
+  </div>
 </ion-content>
