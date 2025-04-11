@@ -1,0 +1,35 @@
+ion-header {
+  ion-toolbar {
+    --background: var(--ion-color-light);
+    --color: var(--ion-color-dark);
+  }
+}
+
+ion-content {
+  --background: var(--ion-color-light);
+}
+
+ion-item {
+  --background: var(--ion-color-light);
+  --border-color: var(--ion-color-medium);
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+ion-input, ion-select {
+  --background: var(--ion-color-white);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+ion-button {
+  --background: var(--ion-color-primary);
+  --background-activated: var(--ion-color-primary-shade);
+  --background-hover: var(--ion-color-primary-tint);
+  --color: var(--ion-color-light);
+  margin-top: 24px;
+  height: 48px;
+  font-weight: 500;
+} 

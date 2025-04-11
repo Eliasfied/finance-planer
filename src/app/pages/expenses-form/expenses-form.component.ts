@@ -5,19 +5,16 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonCar
 import { addIcons } from 'ionicons';
 import { add, chevronBack, chevronForward, car, tvOutline } from 'ionicons/icons';
 import { ProgressDotsComponent } from '../../components/progress-dots/progress-dots.component';
+import { ExpenseService } from '../../services/expense.service';
+import { Expense } from '../../models/expense.model';
+import { ModalController } from '@ionic/angular/standalone';
+import { AddExpenseModalComponent } from '../../components/add-expense-modal/add-expense-modal.component';
 
 interface ExpenseCategory {
-  id: string;
   name: string;
   icon: string;
   totalAmount: number;
   expenses: Expense[];
-}
-
-interface Expense {
-  id: string;
-  name: string;
-  amount: number;
 }
 
 @Component({
@@ -42,40 +39,75 @@ interface Expense {
   ]
 })
 export class ExpensesFormComponent implements OnInit {
-  totalPlannedAmount: number = 1850;
+  totalPlannedAmount: number = 0;
   monthlyBudget: number = 2500;
-  leftToSpend: number = 550;
+  leftToSpend: number = 2500;
 
-  expenseCategories: ExpenseCategory[] = [
-    {
-      id: '1',
-      name: 'Car & Transport',
-      icon: 'car',
-      totalAmount: 700,
-      expenses: [
-        { id: '1', name: 'Car insurance', amount: 350 },
-        { id: '2', name: 'Repair & Service', amount: 200 },
-        { id: '3', name: 'Gas', amount: 150 }
-      ]
-    },
-    {
-      id: '2',
-      name: 'Subscriptions',
-      icon: 'tv-outline',
-      totalAmount: 60,
-      expenses: [
-        { id: '4', name: 'Netflix', amount: 25 },
-        { id: '5', name: 'Amazon Prime', amount: 20 },
-        { id: '6', name: 'Disney+', amount: 15 }
-      ]
-    }
-  ];
+  expenseCategories: ExpenseCategory[] = [];
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private expenseService: ExpenseService,
+    private modalCtrl: ModalController
+  ) {
     addIcons({ add, chevronBack, chevronForward, car, tvOutline });
   }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    await this.loadExpenses();
+  }
+
+  async loadExpenses() {
+    try {
+      const expenses = await this.expenseService.getExpenses();
+      this.expenseCategories = this.groupExpensesByCategory(expenses);
+      this.calculateTotals();
+    } catch (error) {
+      console.error('Error loading expenses:', error);
+    }
+  }
+
+  private groupExpensesByCategory(expenses: Expense[]): ExpenseCategory[] {
+    const categoriesMap = new Map<string, ExpenseCategory>();
+    
+    expenses.forEach(expense => {
+      if (!categoriesMap.has(expense.category)) {
+        categoriesMap.set(expense.category, {
+          name: expense.category,
+          icon: this.getCategoryIcon(expense.category),
+          totalAmount: 0,
+          expenses: []
+        });
+      }
+      
+      const category = categoriesMap.get(expense.category)!;
+      category.expenses.push(expense);
+      category.totalAmount += expense.amount;
+    });
+
+    return Array.from(categoriesMap.values());
+  }
+
+  private getCategoryIcon(category: string): string {
+    const iconMap: { [key: string]: string } = {
+      'Car & Transport': 'car',
+      'Subscriptions': 'tv-outline',
+      'Bills & Utilities': 'flash-outline',
+      'Food & Dining': 'restaurant-outline',
+      'Shopping': 'cart-outline',
+      'Entertainment': 'game-controller-outline',
+      'Health & Fitness': 'fitness-outline',
+      'Travel': 'airplane-outline',
+      'Education': 'school-outline',
+      'Other': 'apps-outline'
+    };
+    return iconMap[category] || 'apps-outline';
+  }
+
+  private calculateTotals() {
+    this.totalPlannedAmount = this.expenseCategories.reduce((total, category) => total + category.totalAmount, 0);
+    this.leftToSpend = this.monthlyBudget - this.totalPlannedAmount;
+  }
 
   goToNext() {
     this.router.navigate(['/summary']);
@@ -89,7 +121,16 @@ export class ExpensesFormComponent implements OnInit {
     return (this.totalPlannedAmount / this.monthlyBudget) * 100;
   }
 
-  addNewExpense() {
-    // TODO: Implement add new expense logic
+  async addNewExpense() {
+    const modal = await this.modalCtrl.create({
+      component: AddExpenseModalComponent
+    });
+    
+    await modal.present();
+    
+    const { data } = await modal.onWillDismiss();
+    if (data) {
+      await this.loadExpenses();
+    }
   }
 }
