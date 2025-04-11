@@ -3,17 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
   IonContent, 
-  IonHeader, 
-  IonTitle, 
-  IonToolbar, 
-  IonButton, 
   IonIcon, 
   IonInput, 
   IonSelect, 
   IonSelectOption, 
-  IonLabel, 
-  IonItem,
-  IonButtons
+  IonText
 } from '@ionic/angular/standalone';
 import { ModalController } from '@ionic/angular/standalone';
 import { ExpenseService } from '../../services/expense.service';
@@ -28,17 +22,11 @@ import { Expense } from '../../models/expense.model';
     CommonModule,
     FormsModule,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    IonButton,
     IonIcon,
     IonInput,
     IonSelect,
     IonSelectOption,
-    IonLabel,
-    IonItem,
-    IonButtons
+    IonText
   ]
 })
 export class AddExpenseModalComponent {
@@ -54,6 +42,7 @@ export class AddExpenseModalComponent {
   };
 
   categories = [
+    'Home',
     'Car & Transport',
     'Subscriptions',
     'Bills & Utilities',

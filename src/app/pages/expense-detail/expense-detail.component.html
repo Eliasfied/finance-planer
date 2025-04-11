@@ -1,0 +1,55 @@
+<ion-content>
+  <div class="nav-header">
+    <div class="back-button" (click)="navigateBack()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </div>
+    <h2>Expense</h2>
+  </div>
+
+  <div class="page-header">
+    <h1>Details</h1>
+    <a class="edit-link" (click)="onEdit()">Edit</a>
+  </div>
+
+  <div class="details-container" *ngIf="!isLoading && expense">
+    <ion-card>
+      <ion-card-content>
+        <div class="detail-group">
+          <div class="detail-item">
+            <ion-text color="medium">Expense name</ion-text>
+            <ion-text>{{ expense.name }}</ion-text>
+          </div>
+
+          <div class="detail-item">
+            <ion-text color="medium">Category</ion-text>
+            <ion-text>{{ expense.category }}</ion-text>
+          </div>
+
+          <div class="detail-item">
+            <ion-text color="medium">Amount</ion-text>
+            <ion-text class="amount">-{{ expense.amount | number:'1.2-2' }} €</ion-text>
+          </div>
+
+          <div class="detail-item">
+            <ion-text color="medium">Billing Time</ion-text>
+            <ion-text>{{ expense.billingTime }}</ion-text>
+          </div>
+
+          <div class="detail-item">
+            <ion-text color="medium">Billing Date</ion-text>
+            <ion-text>{{ expense.billingDate }}</ion-text>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="delete-button" (click)="deleteExpense()">
+      <ion-icon name="trash-outline"></ion-icon>
+      <span>Delete Expense</span>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner></ion-spinner>
+  </div>
+</ion-content> 

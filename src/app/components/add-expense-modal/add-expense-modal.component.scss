@@ -1,35 +1,110 @@
-ion-header {
-  ion-toolbar {
-    --background: var(--ion-color-light);
+.nav-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: white;
+  
+  .back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    margin-right: 16px;
+    cursor: pointer;
+    
+    ion-icon {
+      font-size: 24px;
+      color: #007AFF;
+
+    }
+  }
+  
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+  }
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 16px;
+  
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ion-color-dark);
+  }
+  
+  .save-link {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ion-color-primary);
+    text-decoration: none;
+    
+    &.disabled {
+      color: var(--ion-color-medium);
+      pointer-events: none;
+    }
+  }
+}
+
+.form-field-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 0 16px 16px;
+  
+  ion-text {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .custom-input {
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+    font-size: 16px;
     --color: var(--ion-color-dark);
+  }
+  
+  .amount-input {
+    display: flex;
+    align-items: center;
+    
+    .custom-input {
+      flex: 1;
+    }
+    
+    .currency {
+      margin-left: 8px;
+      font-size: 16px;
+      color: var(--ion-color-dark);
+    }
+  }
+  
+  ion-select {
+    width: 100%;
+    --padding-start: 0;
+    --padding-end: 0;
+    font-size: 16px;
+    --color: var(--ion-color-dark);
+  }
+  
+  ion-icon {
+    color: var(--ion-color-medium);
+    font-size: 20px;
   }
 }
 
 ion-content {
-  --background: var(--ion-color-light);
-}
-
-ion-item {
-  --background: var(--ion-color-light);
-  --border-color: var(--ion-color-medium);
-  margin-bottom: 16px;
-  border-radius: 8px;
-}
-
-ion-input, ion-select {
-  --background: var(--ion-color-white);
-  --padding-start: 16px;
-  --padding-end: 16px;
-  border-radius: 8px;
-  margin-top: 8px;
-}
-
-ion-button {
-  --background: var(--ion-color-primary);
-  --background-activated: var(--ion-color-primary-shade);
-  --background-hover: var(--ion-color-primary-tint);
-  --color: var(--ion-color-light);
-  margin-top: 24px;
-  height: 48px;
-  font-weight: 500;
+  --background: white;
 } 

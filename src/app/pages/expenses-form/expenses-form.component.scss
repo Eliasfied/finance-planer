@@ -39,7 +39,7 @@
 
       .progress {
         height: 100%;
-        background: linear-gradient(90deg, #FF6B6B 0%, var(--ion-color-primary) 100%);
+        background: var(--ion-color-primary);
         border-radius: 4px;
         transition: width 0.3s ease;
       }
@@ -74,13 +74,6 @@
           color: white;
         }
 
-        &.auto {
-          background: #845EF7;
-        }
-
-        &.bills {
-          background: #FF922B;
-        }
       }
 
       .category-info {
@@ -174,7 +167,6 @@ ion-content {
   .amount {
     font-size: 40px;
     font-weight: 700;
-    color: var(--ion-color-danger);
     margin-bottom: 8px;
   }
   
@@ -252,19 +244,20 @@ ion-content {
       .category-name {
         flex: 1;
         font-size: 16px;
-        font-weight: 600;
+        font-weight: normal;
         color: var(--ion-color-dark);
       }
 
       .category-amount {
         font-size: 16px;
-        font-weight: 600;
+        font-weight: normal;
+
         color: var(--ion-color-dark);
       }
     }
 
     .expenses-container {
-      margin-left: 56px;
+      margin-left: 0;
 
       .expense-item {
         display: flex;
@@ -272,6 +265,7 @@ ion-content {
         align-items: center;
         padding: 8px 0;
         border-bottom: 1px solid var(--ion-color-light);
+        padding-left: 0;
 
         &:last-child {
           border-bottom: none;
@@ -284,12 +278,14 @@ ion-content {
 
         .expense-name {
           font-size: 14px;
+          font-weight: bold;
           color: var(--ion-color-dark);
+          margin-left: 0;
         }
 
         .expense-amount {
           font-size: 14px;
-          font-weight: 500;
+          font-weight: bold;
           color: var(--ion-color-dark);
         }
       }

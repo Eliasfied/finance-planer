@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonCard, IonCardContent, IonProgressBar, IonFab, IonFabButton } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonIcon, IonCard, IonCardContent, IonFab, IonFabButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { add, chevronBack, chevronForward, car, tvOutline } from 'ionicons/icons';
+import { add, chevronBack, chevronForward, car, tv, flash, restaurant, cart, gameController, fitness, airplane, school, apps, gameControllerOutline, home } from 'ionicons/icons';
 import { ProgressDotsComponent } from '../../components/progress-dots/progress-dots.component';
 import { ExpenseService } from '../../services/expense.service';
 import { Expense } from '../../models/expense.model';
 import { ModalController } from '@ionic/angular/standalone';
 import { AddExpenseModalComponent } from '../../components/add-expense-modal/add-expense-modal.component';
+import { EditExpenseModalComponent } from '../../components/edit-expense-modal/edit-expense-modal.component';
 
 interface ExpenseCategory {
   name: string;
@@ -25,14 +26,10 @@ interface ExpenseCategory {
   imports: [
     CommonModule,
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonButton,
     IonIcon,
     IonCard,
     IonCardContent,
-    IonProgressBar,
     IonFab,
     IonFabButton,
     ProgressDotsComponent
@@ -50,7 +47,7 @@ export class ExpensesFormComponent implements OnInit {
     private expenseService: ExpenseService,
     private modalCtrl: ModalController
   ) {
-    addIcons({ add, chevronBack, chevronForward, car, tvOutline });
+    addIcons({ add, chevronBack, chevronForward, car, apps, tv, flash, restaurant, cart , gameController, fitness, airplane, school, home, gameControllerOutline });
   }
 
   async ngOnInit() {
@@ -82,26 +79,44 @@ export class ExpensesFormComponent implements OnInit {
       
       const category = categoriesMap.get(expense.category)!;
       category.expenses.push(expense);
-      category.totalAmount += expense.amount;
+      category.totalAmount += this.transformAmountToMonthly(expense);
     });
 
-    return Array.from(categoriesMap.values());
+    // Sort expenses within each category
+    categoriesMap.forEach(category => {
+      category.expenses.sort((a, b) => this.transformAmountToMonthly(b) - this.transformAmountToMonthly(a));
+    });
+
+    // Convert map to array and sort categories by total amount
+    return Array.from(categoriesMap.values()).sort((a, b) => b.totalAmount - a.totalAmount);
   }
+
+  public transformAmountToMonthly(expense: Expense): number {
+    if (expense.billingTime === 'quarterly') {
+      return expense.amount / 4;
+    } else if (expense.billingTime === 'annually') {
+      return expense.amount / 12;
+    } 
+  else {
+    return expense.amount;
+  }
+}
 
   private getCategoryIcon(category: string): string {
     const iconMap: { [key: string]: string } = {
+      'Home': 'home',
       'Car & Transport': 'car',
-      'Subscriptions': 'tv-outline',
-      'Bills & Utilities': 'flash-outline',
-      'Food & Dining': 'restaurant-outline',
-      'Shopping': 'cart-outline',
-      'Entertainment': 'game-controller-outline',
-      'Health & Fitness': 'fitness-outline',
-      'Travel': 'airplane-outline',
-      'Education': 'school-outline',
-      'Other': 'apps-outline'
+      'Subscriptions': 'tv',
+      'Bills & Utilities': 'flash',
+      'Food & Dining': 'restaurant',
+      'Shopping': 'cart',
+      'Entertainment': 'game-controller',
+      'Health & Fitness': 'fitness',
+      'Travel': 'airplane',
+      'Education': 'school',
+      'Other': 'apps'
     };
-    return iconMap[category] || 'apps-outline';
+    return iconMap[category] || 'apps';
   }
 
   private calculateTotals() {
@@ -130,6 +145,25 @@ export class ExpensesFormComponent implements OnInit {
     
     const { data } = await modal.onWillDismiss();
     if (data) {
+      await this.loadExpenses();
+    }
+  }
+
+  async onExpenseClick(expense: Expense) {
+    const modal = await this.modalCtrl.create({
+      component: EditExpenseModalComponent,
+      componentProps: {
+        expense: expense
+      }
+    });
+    
+    await modal.present();
+    
+    const { data } = await modal.onWillDismiss();
+    if (data?.expense) {
+      await this.expenseService.updateExpense(data.expense);
+      await this.loadExpenses();
+    } else if (data?.deleted) {
       await this.loadExpenses();
     }
   }

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, getDocs, query, where, deleteDoc, doc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, getDocs, query, where, deleteDoc, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { Expense } from 'src/app/models/expense.model';
 
@@ -40,7 +40,18 @@ export class ExpenseService {
     })) as Expense[];
   }
 
+  async getExpense(id: string): Promise<Expense | null> {
+    const docRef = doc(this.firestore, 'expenses', id);
+    const docSnap = await getDoc(docRef);
+    return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } as Expense : null;
+  }
+
   async deleteExpense(expenseId: string): Promise<void> {
     await deleteDoc(doc(this.firestore, 'expenses', expenseId));
+  }
+
+  async updateExpense(expense: Expense): Promise<void> {
+    const { id, ...expenseData } = expense;
+    await updateDoc(doc(this.firestore, 'expenses', id), expenseData);
   }
 } 

@@ -54,9 +54,9 @@
 
         <!-- Category Expenses -->
         <div class="expenses-container">
-          <div *ngFor="let expense of category.expenses" class="expense-item">
+          <div *ngFor="let expense of category.expenses" class="expense-item" (click)="onExpenseClick(expense)">
             <span class="expense-name">{{ expense.name }}</span>
-            <span class="expense-amount">{{ expense.amount | number:'1.0-0'}} €</span>
+            <span class="expense-amount">{{ transformAmountToMonthly(expense) | number:'1.0-0'}} €</span>
           </div>
         </div>
       </ion-card-content>

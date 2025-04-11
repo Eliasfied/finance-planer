@@ -2,7 +2,7 @@ export interface Expense {
   id: string;
   userId: string;
   category: string;
-  billingTime: 'annual' | 'monthly' | 'quarterly';
+  billingTime: 'annually' | 'monthly' | 'quarterly';
   amount: number;
   name: string;
   billingDate: number;
