@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IonContent, IonIcon, IonText, IonCard, IonCardContent, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBack, trashOutline } from 'ionicons/icons';
-import { ExpenseService } from '../../services/expense.service';
+import { ExpenseService } from 'src/app/services/expense.service';
 
 @Component({
   selector: 'app-expense-detail',

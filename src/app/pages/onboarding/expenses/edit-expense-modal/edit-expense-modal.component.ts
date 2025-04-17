@@ -4,8 +4,8 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonText, IonInput, IonSelect, IonSelectOption, IonButton, ModalController, IonButtons, IonItem } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { close, trash } from 'ionicons/icons';
-import { Expense } from '../../models/expense.model';
-import { ExpenseService } from '../../services/expense.service';
+import { Expense } from '../../../../models/expense.model';
+import { ExpenseService } from '../../../../services/expense.service';
 
 @Component({
   selector: 'app-edit-expense-modal',
@@ -16,9 +16,6 @@ import { ExpenseService } from '../../services/expense.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
     IonIcon,
     IonText,
@@ -26,8 +23,6 @@ import { ExpenseService } from '../../services/expense.service';
     IonSelect,
     IonSelectOption,
     IonButton,
-    IonButtons,
-    IonItem
   ]
 })
 export class EditExpenseModalComponent implements OnInit {

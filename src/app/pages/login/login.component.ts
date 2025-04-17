@@ -55,12 +55,6 @@ export class LoginComponent {
     try {
       await this.authService.login(this.email, this.password);
       
-      // Save remember me preference
-      if (this.rememberMe) {
-        localStorage.setItem('rememberEmail', this.email);
-      } else {
-        localStorage.removeItem('rememberEmail');
-      }
 
       this.router.navigate(['/welcome']);
     } catch (error: any) {

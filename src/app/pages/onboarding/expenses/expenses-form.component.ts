@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 import { IonContent, IonButton, IonIcon, IonCard, IonCardContent, IonFab, IonFabButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { add, chevronBack, chevronForward, car, tv, flash, restaurant, cart, gameController, fitness, airplane, school, apps, gameControllerOutline, home } from 'ionicons/icons';
-import { ProgressDotsComponent } from '../../components/progress-dots/progress-dots.component';
-import { ExpenseService } from '../../services/expense.service';
-import { Expense } from '../../models/expense.model';
+import { ProgressDotsComponent } from '../../../components/progress-dots/progress-dots.component';
+import { ExpenseService } from '../../../services/expense.service';
+import { Expense } from '../../../models/expense.model';
 import { ModalController } from '@ionic/angular/standalone';
-import { AddExpenseModalComponent } from '../../components/add-expense-modal/add-expense-modal.component';
-import { EditExpenseModalComponent } from '../../components/edit-expense-modal/edit-expense-modal.component';
+import { AddExpenseModalComponent } from './add-expense-modal/add-expense-modal.component';
+import { EditExpenseModalComponent } from './edit-expense-modal/edit-expense-modal.component';
 
 interface ExpenseCategory {
   name: string;
@@ -129,7 +129,7 @@ export class ExpensesFormComponent implements OnInit {
   }
 
   goToPrevious() {
-    this.router.navigate(['/finance-method']);
+    this.router.navigate(['/distribution-method']);
   }
 
   getProgressPercentage(): number {

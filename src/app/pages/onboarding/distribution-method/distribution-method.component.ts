@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ProgressDotsComponent } from '../../components/progress-dots/progress-dots.component';
+import { ProgressDotsComponent } from 'src/app/components/progress-dots/progress-dots.component';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { addIcons } from 'ionicons';
 import { cartOutline, trendingUpOutline, walletOutline, arrowForwardOutline, checkmarkCircle, createOutline, warningOutline, closeOutline } from 'ionicons/icons';
-import { FinancialDataService } from 'src/app/services/financial-data.service';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 
 // Register the icons
@@ -30,9 +29,9 @@ interface FinanceMethod {
 }
 
 @Component({
-  selector: 'app-finance-method',
-  templateUrl: './finance-method.component.html',
-  styleUrls: ['./finance-method.component.scss'],
+  selector: 'app-distribution-method',
+  templateUrl: './distribution-method.component.html',
+  styleUrls: ['./distribution-method.component.scss'],
   standalone: true,
   imports: [CommonModule, IonicModule, ReactiveFormsModule, ProgressDotsComponent],
   animations: [
@@ -47,8 +46,8 @@ interface FinanceMethod {
     ])
   ]
 })
-export class FinanceMethodComponent implements OnInit {
-  financeMethodForm: FormGroup;
+export class DistributionMethodComponent implements OnInit {
+  distributionMethodForm: FormGroup;
   isCustomizing = false;
   defaultValues = {
     expenses: 75,
@@ -60,10 +59,9 @@ export class FinanceMethodComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private financialDataService: FinancialDataService,
     private auth: Auth
   ) {
-    this.financeMethodForm = this.formBuilder.group({
+    this.distributionMethodForm = this.formBuilder.group({
       expenses: [this.defaultValues.expenses],
       investments: [this.defaultValues.investments],
       savings: [this.defaultValues.savings]
@@ -82,14 +80,14 @@ export class FinanceMethodComponent implements OnInit {
 
   ngOnInit() {
     // Listen to form changes to update the title
-    this.financeMethodForm.valueChanges.subscribe(() => {
+    this.distributionMethodForm.valueChanges.subscribe(() => {
       this.getMethodTitle();
     });
   }
 
   selectRecommendedMethod() {
     this.isCustomizing = false;
-    this.financeMethodForm.patchValue({
+    this.distributionMethodForm.patchValue({
       expenses: this.defaultValues.expenses,
       investments: this.defaultValues.investments,
       savings: this.defaultValues.savings
@@ -104,12 +102,12 @@ export class FinanceMethodComponent implements OnInit {
   }
 
   getMethodTitle(): string {
-    const values = this.financeMethodForm.value;
+    const values = this.distributionMethodForm.value;
     return `${values.expenses}/${values.investments}/${values.savings}`;
   }
 
   getTotal(): number {
-    const values = this.financeMethodForm.value;
+    const values = this.distributionMethodForm.value;
     return values.expenses + values.investments + values.savings;
   }
 
@@ -118,14 +116,6 @@ export class FinanceMethodComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.financeMethodForm.valid && this.getTotal() === 100) {
-      this.financialDataService.addDistributionValues(
-        this.currentUserId as string,
-        this.financeMethodForm.value.expenses,
-        this.financeMethodForm.value.investments,
-        this.financeMethodForm.value.savings
-      );
       this.router.navigate(['/expenses-form']);
-    }
   }
 } 

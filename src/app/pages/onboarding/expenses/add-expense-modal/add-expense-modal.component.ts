@@ -10,8 +10,8 @@ import {
   IonText
 } from '@ionic/angular/standalone';
 import { ModalController } from '@ionic/angular/standalone';
-import { ExpenseService } from '../../services/expense.service';
-import { Expense } from '../../models/expense.model';
+import { ExpenseService } from 'src/app/services/expense.service';
+import { Expense } from 'src/app/models/expense.model';
 
 @Component({
   selector: 'app-add-expense-modal',

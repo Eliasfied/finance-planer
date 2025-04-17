@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
-import { Income } from '../../interfaces/income.interface';
-import { ProgressDotsComponent } from '../../components/progress-dots/progress-dots.component';
-import { IncomeService } from '../../services/income.service';
+import { Income } from 'src/app/interfaces/income.interface';
+import { ProgressDotsComponent } from 'src/app/components/progress-dots/progress-dots.component';
+import { IncomeService } from 'src/app/services/income.service';
 import { addIcons } from 'ionicons';
 import { 
   businessOutline,
@@ -138,7 +138,7 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
 
   continueToNext() {
     if (this.savedIncomes.length > 0) {
-      this.router.navigate(['/finance-method']);
+      this.router.navigate(['/distribution-method']);
     }
   }
 } 

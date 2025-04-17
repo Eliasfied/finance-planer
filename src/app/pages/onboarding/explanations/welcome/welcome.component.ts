@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ProgressDotsComponent } from '../../components/progress-dots/progress-dots.component';
+import { ProgressDotsComponent } from '../../../../components/progress-dots/progress-dots.component';
 import { addIcons } from 'ionicons';
 import { chevronForwardOutline } from 'ionicons/icons';
 

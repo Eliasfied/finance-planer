@@ -54,13 +54,13 @@
           <ion-icon [name]="isCustomizing ? 'chevron-up' : 'chevron-down'"></ion-icon>
         </div>
 
-        <form *ngIf="isCustomizing" [formGroup]="financeMethodForm" (ngSubmit)="onSubmit()" [@slideInOut]>
+        <form *ngIf="isCustomizing" [formGroup]="distributionMethodForm" (ngSubmit)="onSubmit()" [@slideInOut]>
           <div class="slider-section">
             <div class="slider-item">
               <div class="item-header">
                 <ion-icon name="cart-outline"></ion-icon>
                 <span class="label">Expenses</span>
-                <span class="value">{{financeMethodForm.get('expenses')?.value}}%</span>
+                <span class="value">{{distributionMethodForm.get('expenses')?.value}}%</span>
               </div>
               <ion-range formControlName="expenses" min="0" max="100">
                 <ion-label slot="start">0%</ion-label>
@@ -71,7 +71,7 @@
               <div class="item-header">
                 <ion-icon name="trending-up-outline"></ion-icon>
                 <span class="label">Investments</span>
-                <span class="value">{{financeMethodForm.get('investments')?.value}}%</span>
+                <span class="value">{{distributionMethodForm.get('investments')?.value}}%</span>
               </div>
               <ion-range formControlName="investments" min="0" max="100">
                 <ion-label slot="start">0%</ion-label>
@@ -82,7 +82,7 @@
               <div class="item-header">
                 <ion-icon name="wallet-outline"></ion-icon>
                 <span class="label">Savings</span>
-                <span class="value">{{financeMethodForm.get('savings')?.value}}%</span>
+                <span class="value">{{distributionMethodForm.get('savings')?.value}}%</span>
               </div>
               <ion-range formControlName="savings" min="0" max="100">
                 <ion-label slot="start">0%</ion-label>

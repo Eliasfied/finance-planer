@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Income } from '../../interfaces/income.interface';
-import { IncomeService } from '../../services/income.service';
+import { Income } from 'src/app/interfaces/income.interface';
+import { IncomeService } from 'src/app/services/income.service';
 import { addIcons } from 'ionicons';
 import { arrowBack } from 'ionicons/icons';
 
