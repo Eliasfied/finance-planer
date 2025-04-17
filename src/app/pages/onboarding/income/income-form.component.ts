@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { Income } from 'src/app/interfaces/income.interface';
 import { ProgressDotsComponent } from 'src/app/components/progress-dots/progress-dots.component';
 import { IncomeService } from 'src/app/services/income.service';
@@ -18,7 +17,6 @@ import {
   chevronBackOutline,
   chevronForwardOutline
 } from 'ionicons/icons';
-import { Subscription } from 'rxjs';
 
 // Register Ionicons
 addIcons({
@@ -44,34 +42,12 @@ addIcons({
     ProgressDotsComponent
   ]
 })
-export class IncomeFormComponent implements OnInit, OnDestroy {
-  savedIncomes: Income[] = [];
-  totalMonthlyIncome: number = 0;
-  currentUserId: string | null = null;
-  private incomeChangesSub?: Subscription;
+export class IncomeFormComponent {
+  private router = inject(Router);
+  public incomeService = inject(IncomeService);
+  private modalCtrl = inject(ModalController);
 
-  constructor(
-    private router: Router,
-    private auth: Auth,
-    private incomeService: IncomeService,
-    private modalCtrl: ModalController
-  ) {
-    // Get current user
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        this.currentUserId = user.uid;
-        this.loadSavedIncomes();
-      } else {
-        console.error('No user logged in');
-        this.router.navigate(['/login']);
-      }
-    });
-
-    // Subscribe to income changes
-    this.incomeChangesSub = this.incomeService.incomeChanges$.subscribe(() => {
-      this.loadSavedIncomes();
-    });
-  }
+  constructor() {}
 
   async openAddIncomeModal() {
     const { AddIncomeModalComponent } = await import('./add-income-modal/add-income-modal.component');
@@ -82,50 +58,22 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
     });
 
     modal.onDidDismiss().then(async (result) => {
-      if (result.data && this.currentUserId) {
-        const newIncome: Omit<Income, 'id'> = {
+      if (result.data) {
+        const newIncomeData: Omit<Income, 'id' | 'userId'> = {
           name: result.data.name,
           type: result.data.type,
-          amount: Number(result.data.amount),
-          userId: this.currentUserId
+          amount: Number(result.data.amount)
         };
-        
-        await this.incomeService.addIncome(this.currentUserId, newIncome);
-        this.savedIncomes.push(newIncome as Income);
+
+        try {
+          await this.incomeService.addIncome(newIncomeData);
+        } catch (error) {
+          console.error('Error adding income via modal:', error);
+        }
       }
     });
 
     return await modal.present();
-  }
-
-  getTotalIncome(): number {
-    return this.savedIncomes.reduce((total, income) => total + income.amount, 0);
-  }
-
-  async ngOnInit() {
-    if (this.currentUserId) {
-      await this.loadSavedIncomes();
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.incomeChangesSub) {
-      this.incomeChangesSub.unsubscribe();
-    }
-  }
-
-  async loadSavedIncomes() {
-    if (!this.currentUserId) return;
-    try {
-      this.savedIncomes = await this.incomeService.getIncomes(this.currentUserId);
-      this.calculateTotalIncome();
-    } catch (error) {
-      console.error('Error loading incomes:', error);
-    }
-  }
-
-  calculateTotalIncome() {
-    this.totalMonthlyIncome = this.getTotalIncome();
   }
 
   viewIncomeDetails(income: Income) {
@@ -137,8 +85,10 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
   }
 
   continueToNext() {
-    if (this.savedIncomes.length > 0) {
+    if (this.incomeService.savedIncomes().length > 0) {
       this.router.navigate(['/distribution-method']);
+    } else {
+      console.log('Please add at least one income source to continue.');
     }
   }
 } 

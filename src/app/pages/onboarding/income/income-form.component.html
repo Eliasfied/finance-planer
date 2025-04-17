@@ -14,13 +14,13 @@
 
   <!-- Total Income Section -->
   <div class="total-income">
-    <span class="amount">{{ totalMonthlyIncome | number:'1.0-0' }} €</span>
+    <span class="amount">{{ incomeService.totalMonthlyIncome() | number:'1.0-0' }} €</span>
     <span class="label">Monthly income</span>
   </div>
 
   <!-- Income List -->
   <div class="income-list">
-    <ion-card *ngFor="let income of savedIncomes" class="income-card" (click)="viewIncomeDetails(income)">
+    <ion-card *ngFor="let income of incomeService.savedIncomes()" class="income-card" (click)="viewIncomeDetails(income)">
       <ion-card-content>
         <div class="income-icon">
           <ion-icon name="wallet-outline"></ion-icon>

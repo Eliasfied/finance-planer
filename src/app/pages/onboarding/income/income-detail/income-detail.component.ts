@@ -1,15 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Income } from 'src/app/interfaces/income.interface';
 import { IncomeService } from 'src/app/services/income.service';
 import { addIcons } from 'ionicons';
-import { arrowBack, trashOutline } from 'ionicons/icons';
-import { Subscription } from 'rxjs';
+import { arrowBack, trashOutline, createOutline } from 'ionicons/icons';
 
 // Register Ionicons
-addIcons({ arrowBack, trashOutline });
+addIcons({ arrowBack, trashOutline, createOutline });
 
 @Component({
   selector: 'app-income-detail',
@@ -18,47 +17,38 @@ addIcons({ arrowBack, trashOutline });
   standalone: true,
   imports: [CommonModule, IonicModule]
 })
-export class IncomeDetailComponent implements OnInit, OnDestroy {
+export class IncomeDetailComponent implements OnInit {
   income: Income | null = null;
   isLoading = true;
   private incomeId: string | null = null;
-  private incomeChangesSub?: Subscription;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private incomeService: IncomeService
-  ) {}
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private incomeService = inject(IncomeService);
 
   async ngOnInit() {
     this.incomeId = this.route.snapshot.paramMap.get('id');
     if (!this.incomeId) {
+      console.error('Income ID not found in route parameters.');
       this.router.navigate(['/income-form']);
       return;
     }
 
     await this.loadIncomeDetails();
-
-    // Subscribe to income changes
-    this.incomeChangesSub = this.incomeService.incomeChanges$.subscribe(() => {
-      this.loadIncomeDetails();
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.incomeChangesSub) {
-      this.incomeChangesSub.unsubscribe();
-    }
   }
 
   private async loadIncomeDetails() {
     if (!this.incomeId) return;
 
+    this.isLoading = true;
     try {
       this.income = await this.incomeService.getIncome(this.incomeId);
-      this.isLoading = false;
+      if (!this.income) {
+        console.warn(`Income with ID ${this.incomeId} not found.`);
+      }
     } catch (error) {
-      console.error('Error loading income:', error);
+      console.error('Error loading income details:', error);
+    } finally {
       this.isLoading = false;
     }
   }
@@ -67,17 +57,22 @@ export class IncomeDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['/income-form']);
   }
 
-  async onEdit() {
-    if (this.income) {
-      this.router.navigate(['/income', this.income.id, 'edit']);
+  onEdit() {
+    if (this.incomeId) {
+      this.router.navigate(['/income', this.incomeId, 'edit']);
+    } else {
+      console.error('Cannot edit: Income ID is missing.');
     }
   }
 
   async deleteIncome() {
-    if (!this.income) return;
+    if (!this.incomeId) {
+      console.error('Cannot delete: Income ID is missing.');
+      return;
+    }
 
     try {
-      await this.incomeService.removeIncome(this.income.id);
+      await this.incomeService.removeIncome(this.incomeId);
       this.router.navigate(['/income-form']);
     } catch (error) {
       console.error('Error deleting income:', error);
