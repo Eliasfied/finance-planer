@@ -6,16 +6,22 @@
       Previous
     </ion-button>
     <h1>Method</h1>
-    <ion-button fill="clear" class="nav-button" (click)="onSubmit()">
+    <ion-button fill="clear" class="nav-button" [disabled]="isSaving" (click)="onSubmit()">
       Next
       <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
     </ion-button>
   </div>
 
-  <div class="content-section">
+  <!-- Loading Spinner -->
+  <div class="loading-container" *ngIf="isSaving">
+    <ion-spinner name="circular"></ion-spinner>
+    <p>Saving your distribution method...</p>
+  </div>
+
+  <div class="content-section" *ngIf="!isSaving">
     <div class="form-container">
       <!-- Recommended Method Card -->
-      <div class="method-card" [class.selected]="!isCustomizing" (click)="selectRecommendedMethod()">
+      <div class="method-card" [class.selected]="recommendedSelected && !isCustomizing" (click)="selectRecommendedMethod()">
         <div class="recommended-tag">
           <ion-icon name="checkmark-circle"></ion-icon>
           <span>Recommended</span>
@@ -44,11 +50,14 @@
       </div>
 
       <!-- Custom Method Card -->
-      <div class="method-card custom" [class.selected]="isCustomizing" [class.expanded]="isCustomizing">
+      <div class="method-card custom" [class.selected]="isCustomizing || (!recommendedSelected && !isRecommendedMethod())" [class.expanded]="isCustomizing">
         <div class="method-header" (click)="toggleCustomization()">
           <div class="header-content">
             <h2>Custom Distribution</h2>
-            <p *ngIf="!isCustomizing">Create your own distribution</p>
+            <p *ngIf="!isCustomizing && isRecommendedMethod()">Create your own distribution</p>
+            <p *ngIf="!isCustomizing && !isRecommendedMethod()">
+              {{distributionService.expensesPercentage()}}/{{distributionService.investmentsPercentage()}}/{{distributionService.savingsPercentage()}}
+            </p>
             <p *ngIf="isCustomizing">{{getMethodTitle()}}</p>
           </div>
           <ion-icon [name]="isCustomizing ? 'chevron-up' : 'chevron-down'"></ion-icon>

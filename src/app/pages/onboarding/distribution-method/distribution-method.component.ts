@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -7,7 +7,7 @@ import { ProgressDotsComponent } from 'src/app/components/progress-dots/progress
 import { trigger, transition, style, animate } from '@angular/animations';
 import { addIcons } from 'ionicons';
 import { cartOutline, trendingUpOutline, walletOutline, arrowForwardOutline, checkmarkCircle, createOutline, warningOutline, closeOutline } from 'ionicons/icons';
-import { Auth, onAuthStateChanged } from '@angular/fire/auth';
+import { DistributionMethodService } from 'src/app/services/distribution-method.service';
 
 // Register the icons
 addIcons({ 
@@ -20,13 +20,6 @@ addIcons({
   warningOutline,
   closeOutline
 });
-
-interface FinanceMethod {
-  name: string;
-  expenses: number;
-  investments: number;
-  savings: number;
-}
 
 @Component({
   selector: 'app-distribution-method',
@@ -49,32 +42,29 @@ interface FinanceMethod {
 export class DistributionMethodComponent implements OnInit {
   distributionMethodForm: FormGroup;
   isCustomizing = false;
-  defaultValues = {
+  isSaving = false;
+  
+  // Services via inject
+  private formBuilder = inject(FormBuilder);
+  private router = inject(Router);
+  public distributionService = inject(DistributionMethodService);
+
+  // Standard recommended values
+  private recommendedValues = {
     expenses: 75,
     investments: 15,
     savings: 10
   };
-  currentUserId: string | null = null;
+  
+  // Flag to track if user selected recommended method
+  public recommendedSelected = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private auth: Auth
-  ) {
+  constructor() {
+    // Initialize the form with values from service or default
     this.distributionMethodForm = this.formBuilder.group({
-      expenses: [this.defaultValues.expenses],
-      investments: [this.defaultValues.investments],
-      savings: [this.defaultValues.savings]
-    });
-
-    // Get current user
-    onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        this.currentUserId = user.uid;
-      } else {
-        console.error('No user logged in');
-        this.router.navigate(['/login']);
-      }
+      expenses: [this.distributionService.expensesPercentage()],
+      investments: [this.distributionService.investmentsPercentage()],
+      savings: [this.distributionService.savingsPercentage()]
     });
   }
 
@@ -83,14 +73,50 @@ export class DistributionMethodComponent implements OnInit {
     this.distributionMethodForm.valueChanges.subscribe(() => {
       this.getMethodTitle();
     });
+
+    // Check if there's a custom method saved and automatically expand Custom section
+    this.checkForCustomMethod();
+    
+    // If the method is already the recommended one, mark it as selected
+    if (this.isRecommendedMethod()) {
+      this.recommendedSelected = true;
+    }
   }
 
+  // Check if user has a saved custom method that's different from recommended
+  private checkForCustomMethod() {
+    const currentMethod = this.distributionService.distributionMethod();
+    
+    if (currentMethod) {
+      const isCustom = 
+        currentMethod.expenses !== this.recommendedValues.expenses ||
+        currentMethod.investments !== this.recommendedValues.investments ||
+        currentMethod.savings !== this.recommendedValues.savings;
+      
+      if (isCustom) {
+        // User has a custom method saved, open the custom section
+        this.isCustomizing = true;
+        
+        // Make sure form values reflect the current distribution method
+        this.distributionMethodForm.patchValue({
+          expenses: this.distributionService.expensesPercentage(),
+          investments: this.distributionService.investmentsPercentage(),
+          savings: this.distributionService.savingsPercentage()
+        });
+      }
+    }
+  }
+
+  // Select recommended method (but don't save until Next is clicked)
   selectRecommendedMethod() {
     this.isCustomizing = false;
+    this.recommendedSelected = true;
+    
+    // Update form with the recommended values
     this.distributionMethodForm.patchValue({
-      expenses: this.defaultValues.expenses,
-      investments: this.defaultValues.investments,
-      savings: this.defaultValues.savings
+      expenses: this.recommendedValues.expenses,
+      investments: this.recommendedValues.investments,
+      savings: this.recommendedValues.savings
     });
   }
 
@@ -98,6 +124,18 @@ export class DistributionMethodComponent implements OnInit {
     if (this.isCustomizing && this.getTotal() !== 100) {
       return; // Don't allow closing if total is not 100%
     }
+    
+    if (!this.isCustomizing) {
+      this.distributionMethodForm.patchValue({
+        expenses: this.distributionService.expensesPercentage(),
+        investments: this.distributionService.investmentsPercentage(),
+        savings: this.distributionService.savingsPercentage()
+      });
+      
+      // Reset recommended selection flag when custom is opened
+      this.recommendedSelected = false;
+    }
+    
     this.isCustomizing = !this.isCustomizing;
   }
 
@@ -111,11 +149,46 @@ export class DistributionMethodComponent implements OnInit {
     return values.expenses + values.investments + values.savings;
   }
 
+  // Check if current distribution is the recommended one
+  isRecommendedMethod(): boolean {
+    const current = this.distributionService.distributionMethod();
+    if (!current) return true; // Default to recommended if no method saved
+    
+    return (
+      current.expenses === this.recommendedValues.expenses &&
+      current.investments === this.recommendedValues.investments &&
+      current.savings === this.recommendedValues.savings
+    );
+  }
+
   navigateBack() {
     this.router.navigate(['/income-form']);
   }
 
-  onSubmit() {
+  async onSubmit() {
+    const methodToSave = this.recommendedSelected ? 
+      this.recommendedValues : 
+      {
+        expenses: this.distributionMethodForm.value.expenses,
+        investments: this.distributionMethodForm.value.investments,
+        savings: this.distributionMethodForm.value.savings
+      };
+
+    if (!this.recommendedSelected && (this.getTotal() !== 100 || !this.distributionMethodForm.valid)) {
+      console.error('Total must be 100% for custom distribution');
+      return;
+    }
+
+    try {
+      this.isSaving = true;
+      // Save the selected method
+      await this.distributionService.saveDistributionMethod(methodToSave);
+      // Navigate to next page
       this.router.navigate(['/expenses-form']);
+    } catch (error) {
+      console.error('Error saving distribution method:', error);
+    } finally {
+      this.isSaving = false;
+    }
   }
 } 
