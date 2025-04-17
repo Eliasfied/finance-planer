@@ -14,7 +14,7 @@
 
   <!-- Total Expenses Section -->
   <div class="total-expenses">
-    <span class="amount">{{ totalPlannedAmount | number:'1.0-0' }} €</span>
+    <span class="amount">{{ totalPlannedAmount() | number:'1.0-0' }} €</span>
     <span class="label">Already planned</span>
   </div>
 
@@ -24,16 +24,16 @@
       <div class="budget-info">
         <div class="budget-item">
           <span class="label">Left to spend</span>
-          <span class="amount">{{ leftToSpend | number:'1.0-0' }} €</span>
+          <span class="amount">{{ leftToSpend() | number:'1.0-0' }} €</span>
         </div>
         <div class="budget-item">
           <span class="label">Monthly budget</span>
-          <span class="amount">{{ monthlyBudget | number:'1.0-0' }} €</span>
+          <span class="amount">{{ monthlyBudget() | number:'1.0-0' }} €</span>
         </div>
       </div>
       <div class="progress-container">
         <div class="progress-bar">
-          <div class="progress" [style.width.%]="getProgressPercentage()"></div>
+          <div class="progress" [style.width.%]="progressPercentage()"></div>
         </div>
       </div>
     </ion-card-content>
@@ -41,7 +41,7 @@
 
   <!-- Expenses List -->
   <div class="expenses-list">
-    <ion-card *ngFor="let category of expenseCategories" class="category-card">
+    <ion-card *ngFor="let category of expenseCategories()" class="category-card">
       <ion-card-content>
         <!-- Category Header -->
         <div class="category-header">

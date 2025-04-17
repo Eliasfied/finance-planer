@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { IonContent, IonButton, IonIcon, IonCard, IonCardContent, IonFab, IonFabButton } from '@ionic/angular/standalone';
@@ -10,6 +10,8 @@ import { Expense } from '../../../models/expense.model';
 import { ModalController } from '@ionic/angular/standalone';
 import { AddExpenseModalComponent } from './add-expense-modal/add-expense-modal.component';
 import { EditExpenseModalComponent } from './edit-expense-modal/edit-expense-modal.component';
+import { IncomeService } from '../../../services/income.service';
+import { DistributionMethodService } from '../../../services/distribution-method.service';
 
 interface ExpenseCategory {
   name: string;
@@ -36,35 +38,70 @@ interface ExpenseCategory {
   ]
 })
 export class ExpensesFormComponent implements OnInit {
-  totalPlannedAmount: number = 0;
-  monthlyBudget: number = 2500;
-  leftToSpend: number = 2500;
+  // Inject services using the inject function for cleaner code
+  private router = inject(Router);
+  private expenseService = inject(ExpenseService);
+  private modalCtrl = inject(ModalController);
+  private incomeService = inject(IncomeService);
+  private distributionService = inject(DistributionMethodService);
+  
+  // UI state signals
+  private isLoading = signal(false);
+  
+  // Categories signal to be grouped from expenses
+  private categories = signal<ExpenseCategory[]>([]);
+  
+  // Expose read-only signals for the template
+  expenseCategories = this.categories.asReadonly();
+  
+  // Computed values
+  totalPlannedAmount = computed(() => 
+    this.expenseService.totalMonthlyExpenses()
+  );
+  
+  monthlyBudget = computed(() => {
+    const totalIncome = this.incomeService.totalMonthlyIncome();
+    const expensesPercentage = this.distributionService.expensesPercentage();
+    return totalIncome * (expensesPercentage / 100);
+  });
+  
+  leftToSpend = computed(() => 
+    this.monthlyBudget() - this.totalPlannedAmount()
+  );
+  
+  progressPercentage = computed(() => 
+    this.monthlyBudget() > 0 ? (this.totalPlannedAmount() / this.monthlyBudget()) * 100 : 0
+  );
 
-  expenseCategories: ExpenseCategory[] = [];
-
-  constructor(
-    private router: Router,
-    private expenseService: ExpenseService,
-    private modalCtrl: ModalController
-  ) {
-    addIcons({ add, chevronBack, chevronForward, car, apps, tv, flash, restaurant, cart , gameController, fitness, airplane, school, home, gameControllerOutline });
+  constructor() {
+    addIcons({ add, chevronBack, chevronForward, car, apps, tv, flash, restaurant, cart, gameController, fitness, airplane, school, home, gameControllerOutline });
+    
+    // Add an effect to update categories whenever expenses change
+    effect(() => {
+      const expenses = this.expenseService.expenses();
+      this.updateExpenseCategories(expenses);
+    });
   }
 
   async ngOnInit() {
-    await this.loadExpenses();
+    // Force a refresh to ensure data is loaded
+    await this.expenseService.forceRefresh();
   }
 
-  async loadExpenses() {
-    try {
-      const expenses = await this.expenseService.getExpenses();
-      this.expenseCategories = this.groupExpensesByCategory(expenses);
-      this.calculateTotals();
-    } catch (error) {
-      console.error('Error loading expenses:', error);
+  // Update expense categories when expenses change
+  private updateExpenseCategories(expenses: Expense[] = []) {
+    if (!expenses || expenses.length === 0) {
+      expenses = this.expenseService.expenses();
     }
+    
+    this.categories.set(this.groupExpensesByCategory(expenses));
   }
 
   private groupExpensesByCategory(expenses: Expense[]): ExpenseCategory[] {
+    if (!expenses || expenses.length === 0) {
+      return [];
+    }
+    
     const categoriesMap = new Map<string, ExpenseCategory>();
     
     expenses.forEach(expense => {
@@ -93,14 +130,13 @@ export class ExpensesFormComponent implements OnInit {
 
   public transformAmountToMonthly(expense: Expense): number {
     if (expense.billingTime === 'quarterly') {
-      return expense.amount / 4;
+      return expense.amount / 3;
     } else if (expense.billingTime === 'annually') {
       return expense.amount / 12;
-    } 
-  else {
-    return expense.amount;
+    } else {
+      return expense.amount;
+    }
   }
-}
 
   private getCategoryIcon(category: string): string {
     const iconMap: { [key: string]: string } = {
@@ -119,21 +155,12 @@ export class ExpensesFormComponent implements OnInit {
     return iconMap[category] || 'apps';
   }
 
-  private calculateTotals() {
-    this.totalPlannedAmount = this.expenseCategories.reduce((total, category) => total + category.totalAmount, 0);
-    this.leftToSpend = this.monthlyBudget - this.totalPlannedAmount;
-  }
-
   goToNext() {
     this.router.navigate(['/summary']);
   }
 
   goToPrevious() {
     this.router.navigate(['/distribution-method']);
-  }
-
-  getProgressPercentage(): number {
-    return (this.totalPlannedAmount / this.monthlyBudget) * 100;
   }
 
   async addNewExpense() {
@@ -145,7 +172,7 @@ export class ExpensesFormComponent implements OnInit {
     
     const { data } = await modal.onWillDismiss();
     if (data) {
-      await this.loadExpenses();
+      // The effect will update the categories automatically when the expense service signals are updated
     }
   }
 
@@ -162,9 +189,8 @@ export class ExpensesFormComponent implements OnInit {
     const { data } = await modal.onWillDismiss();
     if (data?.expense) {
       await this.expenseService.updateExpense(data.expense);
-      await this.loadExpenses();
     } else if (data?.deleted) {
-      await this.loadExpenses();
+      // The effect will update the categories automatically
     }
   }
 }
