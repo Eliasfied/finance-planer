@@ -1,0 +1,61 @@
+<ion-content>
+  <div class="nav-header">
+    <div class="back-button" (click)="dismiss()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </div>
+    <h2>Add Entry</h2>
+  </div>
+
+  <div class="page-header">
+    <h1>Details</h1>
+    <a class="save-link" (click)="addEntry()" [class.disabled]="!entry.name || !entry.category || !entry.amount">
+      Done
+    </a>
+  </div>
+
+  <form (ngSubmit)="addEntry()">
+    <!-- Name -->
+    <div class="form-field-card">
+      <ion-text color="medium">Name</ion-text>
+      <ion-input 
+        class="custom-input"
+        [(ngModel)]="entry.name" 
+        name="name" 
+        required>
+      </ion-input>
+    </div>
+
+    <!-- Category -->
+    <div class="form-field-card">
+      <ion-text color="medium">Category</ion-text>
+      <ion-select 
+        class="custom-input"
+        [(ngModel)]="entry.category" 
+        name="category" 
+        required>
+        <ion-select-option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </ion-select-option>
+      </ion-select>
+      <ion-icon name="chevron-down-outline" slot="end"></ion-icon>
+    </div>
+
+    <!-- Amount -->
+    <div class="form-field-card">
+      <ion-text color="medium">Amount</ion-text>
+      <div class="amount-input">
+        <ion-input 
+          class="custom-input"
+          type="number"
+          [(ngModel)]="entry.amount" 
+          name="amount" 
+          required>
+        </ion-input>
+        <span class="currency">€</span>
+      </div>
+    </div>
+
+    <!-- Custom Fields - wird von Kindklassen überschrieben -->
+    <ng-content></ng-content>
+  </form>
+</ion-content> 

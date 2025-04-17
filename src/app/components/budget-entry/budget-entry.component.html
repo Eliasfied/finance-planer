@@ -1,0 +1,89 @@
+<div class="budget-entry-container">
+  <!-- Header with Navigation -->
+  <div class="nav-header">
+    <ion-button fill="clear" class="nav-button" (click)="goToPrevious()">
+      <ion-icon [icon]="chevronBackOutline"></ion-icon>
+      Previous
+    </ion-button>
+    <h1>{{ pageTitle }}</h1>
+    <ion-button fill="clear" class="nav-button" (click)="goToNext()">
+      Next
+      <ion-icon [icon]="chevronForwardOutline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Total Amount Section -->
+  <div class="total-amount">
+    <span class="amount">{{ totalAmount() | number:'1.0-0' }} €</span>
+    <span class="label">Already planned</span>
+  </div>
+
+  <!-- Budget Info Card -->
+  <ion-card class="budget-card">
+    <ion-card-content>
+      <div class="budget-info">
+        <div class="budget-item">
+          <span class="label">Left to spend</span>
+          <span class="amount">{{ leftToAllocate() | number:'1.0-0' }} €</span>
+        </div>
+        <div class="budget-item">
+          <span class="label">Monthly budget</span>
+          <span class="amount">{{ budget() | number:'1.0-0' }} €</span>
+        </div>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress" [style.width.%]="progressPercentage()"></div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Categories List -->
+  <div class="entries-list">
+    <ion-card *ngFor="let category of entryCategories()" class="category-card">
+      <ion-card-content>
+        <!-- Category Header -->
+        <ng-container *ngIf="categoryTemplate; else defaultCategoryTemplate">
+          <ng-container *ngTemplateOutlet="categoryTemplate; context: { $implicit: category }"></ng-container>
+        </ng-container>
+        <ng-template #defaultCategoryTemplate>
+          <div class="category-header">
+            <div class="category-icon">
+              <ion-icon [name]="category.icon"></ion-icon>
+            </div>
+            <span class="category-name">{{category.name}}</span>
+            <span class="category-amount">{{category.totalAmount | number:'1.0-0'}} €</span>
+          </div>
+        </ng-template>
+
+        <!-- Category Entries -->
+        <div class="entries-container">
+          <ng-container *ngIf="entryTemplate; else defaultEntryTemplate">
+            <ng-container *ngFor="let entry of category.entries">
+              <ng-container *ngTemplateOutlet="entryTemplate; context: { $implicit: entry, onClick: onEntryClick.bind(this) }"></ng-container>
+            </ng-container>
+          </ng-container>
+          <ng-template #defaultEntryTemplate>
+            <div *ngFor="let entry of category.entries" class="entry-item" (click)="onEntryClick(entry)">
+              <span class="entry-name">{{ entry.name }}</span>
+              <span class="entry-amount">{{ entryService.getMonthlyAmount(entry) | number:'1.0-0'}} €</span>
+            </div>
+          </ng-template>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Add Entry FAB -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addNewEntry()">
+      <ion-icon [icon]="addOutline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Progress Dots -->
+  <div class="page-navigation">
+    <app-progress-dots [currentStep]="currentStep"></app-progress-dots>
+  </div>
+</div> 

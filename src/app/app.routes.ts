@@ -3,12 +3,9 @@ import { WelcomeComponent } from './pages/onboarding/explanations/welcome/welcom
 import { IncomeFormComponent } from './pages/onboarding/income/income-form.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { ExpensesFormComponent } from './pages/onboarding/expenses/expenses-form.component';
-import { IncomeDetailComponent } from './pages/onboarding/income/income-detail/income-detail.component';
-import { IncomeEditComponent } from './pages/onboarding/income/edit-income/income-edit.component';
-import { ExpenseDetailComponent } from './pages/onboarding/expenses/expense-detail/expense-detail.component';
 import { authGuard } from './guards/auth.guard';
 import { DistributionMethodComponent } from './pages/onboarding/distribution-method/distribution-method.component';
+import { ExpensesBudgetComponent } from './pages/onboarding/expenses/expenses-budget.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -23,31 +20,15 @@ export const routes: Routes = [
     component: IncomeFormComponent,
     canActivate: [authGuard]
   },
-  {
-    path: 'income/:id',
-    component: IncomeDetailComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'income/:id/edit',
-    component: IncomeEditComponent,
-    canActivate: [authGuard]
-  },
   { 
-    path: 'expenses-form', 
-    component: ExpensesFormComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'expense/:id',
-    component: ExpenseDetailComponent,
+    path: 'expenses-budget', 
+    component: ExpensesBudgetComponent,
     canActivate: [authGuard]
   },
   {
     path: 'distribution-method',
     component: DistributionMethodComponent,
     canActivate: [authGuard]
-
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }

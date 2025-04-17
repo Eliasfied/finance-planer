@@ -184,7 +184,7 @@ export class DistributionMethodComponent implements OnInit {
       // Save the selected method
       await this.distributionService.saveDistributionMethod(methodToSave);
       // Navigate to next page
-      this.router.navigate(['/expenses-form']);
+      this.router.navigate(['/expenses-budget']);
     } catch (error) {
       console.error('Error saving distribution method:', error);
     } finally {

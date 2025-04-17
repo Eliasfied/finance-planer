@@ -1,0 +1,98 @@
+<ion-content>
+  <div class="nav-header">
+    <div class="back-button" (click)="dismiss()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </div>
+    <h2>Edit Expense</h2>
+  </div>
+
+  <div class="page-header">
+    <h1>Details</h1>
+    <a class="save-link" (click)="updateEntry()" [class.disabled]="!entry.name || !entry.category || !entry.amount">
+      Save
+    </a>
+  </div>
+
+  <form (ngSubmit)="updateEntry()">
+    <!-- Name -->
+    <div class="form-field-card">
+      <ion-text color="medium">Name</ion-text>
+      <ion-input 
+        class="custom-input"
+        [(ngModel)]="entry.name" 
+        name="name" 
+        required>
+      </ion-input>
+    </div>
+
+    <!-- Category -->
+    <div class="form-field-card">
+      <ion-text color="medium">Category</ion-text>
+      <ion-select 
+        class="custom-input"
+        [(ngModel)]="entry.category" 
+        name="category" 
+        required>
+        <ion-select-option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </ion-select-option>
+      </ion-select>
+      <ion-icon name="chevron-down-outline" slot="end"></ion-icon>
+    </div>
+
+    <!-- Amount -->
+    <div class="form-field-card">
+      <ion-text color="medium">Amount</ion-text>
+      <div class="amount-input">
+        <ion-input 
+          class="custom-input"
+          type="number"
+          [(ngModel)]="entry.amount" 
+          name="amount" 
+          required>
+        </ion-input>
+        <span class="currency">€</span>
+      </div>
+    </div>
+
+    <!-- Billing Time - Specific to Expenses -->
+    <div class="form-field-card">
+      <ion-text color="medium">Billing Time</ion-text>
+      <ion-select 
+        class="custom-input"
+        [(ngModel)]="entry.billingTime" 
+        name="billingTime" 
+        required>
+        <ion-select-option value="monthly">Monthly</ion-select-option>
+        <ion-select-option value="quarterly">Every 3 Months</ion-select-option>
+        <ion-select-option value="annually">Annually</ion-select-option>
+      </ion-select>
+      <ion-icon name="chevron-down-outline" slot="end"></ion-icon>
+    </div>
+
+    <!-- Billing Date - Specific to Expenses -->
+    <div class="form-field-card">
+      <ion-text color="medium">Billing Date</ion-text>
+      <ion-input 
+        class="custom-input"
+        type="number"
+        [(ngModel)]="entry.billingDate" 
+        name="billingDate" 
+        min="1" 
+        max="31" 
+        required>
+      </ion-input>
+    </div>
+  </form>
+  
+  <!-- Delete Button -->
+  <div class="delete-section">
+    <ion-button 
+      expand="block" 
+      color="danger" 
+      (click)="deleteEntry()"
+      class="delete-button">
+      Delete Expense
+    </ion-button>
+  </div>
+</ion-content> 
