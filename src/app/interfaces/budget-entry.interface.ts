@@ -5,6 +5,8 @@ export interface BaseBudgetEntry {
   category: string;
   amount: number;
   createdAt: string;
+  billingDate: number;
+
 }
 
 export interface EntryCategory<T> {
@@ -14,22 +16,20 @@ export interface EntryCategory<T> {
   entries: T[];
 }
 
-// Expense erweitert BaseBudgetEntry mit speziellen Feldern
+// Expense extends BaseBudgetEntry with specific fields
 export interface ExpenseBudgetEntry extends BaseBudgetEntry {
   billingTime: 'annually' | 'monthly' | 'quarterly';
-  billingDate: number;
 }
 
-// Investment erweitert BaseBudgetEntry mit speziellen Feldern
+// Investment extends BaseBudgetEntry with specific fields
 export interface InvestmentBudgetEntry extends BaseBudgetEntry {
   type: 'stocks' | 'crypto' | 'real-estate' | 'bonds' | 'etf' | 'other';
-  riskLevel: 'low' | 'medium' | 'high';
   expectedReturnRate?: number;
+  account: string;
 }
 
-// Savings erweitert BaseBudgetEntry mit speziellen Feldern
+// Savings extends BaseBudgetEntry with specific fields
 export interface SavingsBudgetEntry extends BaseBudgetEntry {
-  goal: string;
-  targetAmount?: number;
-  targetDate?: string;
+  account: string;
+
 } 
