@@ -35,7 +35,8 @@ ion-content {
 
 // Header with balance styles
 .balance-header {
-  background: linear-gradient(180deg, var(--ion-color-primary) 20%, var(--ion-color-primary-tint) 100%);
+  //background: linear-gradient(180deg, var(--ion-color-primary) 20%, var(--ion-color-primary-tint) 100%);
+  background: var(--ion-color-primary);
   color: white;
   padding: 16px 16px 60px;
   margin-bottom: -40px;
