@@ -6,6 +6,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { authGuard } from './guards/auth.guard';
 import { DistributionMethodComponent } from './pages/onboarding/distribution-method/distribution-method.component';
 import { ExpensesBudgetComponent } from './pages/onboarding/expenses/expenses-budget.component';
+import { InvestmentsBudgetComponent } from './pages/onboarding/investments/investments-budget.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,6 +29,11 @@ export const routes: Routes = [
   {
     path: 'distribution-method',
     component: DistributionMethodComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'investments-budget',
+    component: InvestmentsBudgetComponent,
     canActivate: [authGuard]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

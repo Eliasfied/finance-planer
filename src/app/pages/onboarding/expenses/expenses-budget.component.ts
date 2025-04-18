@@ -23,7 +23,7 @@ addIcons({
       [pageTitle]="'Expenses'"
       [currentStep]="3"
       [previousRoute]="'/distribution-method'"
-      [nextRoute]="'/expenses-form'"
+      [nextRoute]="'/investments-budget'"
       [entryService]="expenseService"
       [entryType]="'expenses'"
       [addModalComponent]="addExpenseModalComponent"

@@ -23,7 +23,6 @@ export interface ExpenseBudgetEntry extends BaseBudgetEntry {
 
 // Investment extends BaseBudgetEntry with specific fields
 export interface InvestmentBudgetEntry extends BaseBudgetEntry {
-  type: 'stocks' | 'crypto' | 'real-estate' | 'bonds' | 'etf' | 'other';
   expectedReturnRate?: number;
   account: string;
 }
