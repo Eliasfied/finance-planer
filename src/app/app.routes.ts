@@ -9,7 +9,8 @@ import { ExpensesBudgetComponent } from './pages/onboarding/expenses/expenses-bu
 import { InvestmentsBudgetComponent } from './pages/onboarding/investments/investments-budget.component';
 import { SavingsBudgetComponent } from './pages/onboarding/savings/savings-budget.component';
 import { HomepageComponent } from './pages/homepage/homepage.component';
-
+import { IncomeDetailComponent } from './pages/onboarding/income/income-detail/income-detail.component';
+import { IncomeEditComponent } from './pages/onboarding/income/edit-income/income-edit.component';
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -21,6 +22,16 @@ export const routes: Routes = [
   { 
     path: 'income-form', 
     component: IncomeFormComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'income/:id',
+    component: IncomeDetailComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'income/:id/edit',
+    component: IncomeEditComponent,
     canActivate: [authGuard]
   },
   { 
