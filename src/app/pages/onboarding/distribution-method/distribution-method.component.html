@@ -1,16 +1,7 @@
 <ion-content>
-  <!-- Header with Navigation -->
-  <div class="nav-header">
-    <ion-button fill="clear" class="nav-button" (click)="navigateBack()">
-      <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
-      Previous
-    </ion-button>
-    <h1>Method</h1>
-    <ion-button fill="clear" class="nav-button" [disabled]="isSaving" (click)="onSubmit()">
-      Next
-      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-    </ion-button>
-  </div>
+
+  <app-nav-header [title]="'Method'" [showPrevious]="true" [showNext]="true" [previousRoute]="'/income-form'" [nextRoute]="'/expenses-budget'"></app-nav-header>
+
 
   <!-- Loading Spinner -->
   <div class="loading-container" *ngIf="isSaving">
@@ -114,7 +105,5 @@
   </div>
 
   <!-- Progress Dots -->
-  <div class="page-navigation">
     <app-progress-dots [currentStep]="2"></app-progress-dots>
-  </div>
 </ion-content> 

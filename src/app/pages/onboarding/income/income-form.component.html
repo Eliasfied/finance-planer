@@ -1,16 +1,6 @@
 <ion-content>
-  <!-- Header with Navigation -->
-  <div class="nav-header">
-    <ion-button fill="clear" class="nav-button" (click)="navigateBack()">
-      <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
-      Previous
-    </ion-button>
-    <h1>Income</h1>
-    <ion-button fill="clear" class="nav-button" (click)="continueToNext()">
-      Next
-      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
-    </ion-button>
-  </div>
+ 
+  <app-nav-header [title]="'Income'" [showPrevious]="true" [showNext]="true" [previousRoute]="'/welcome'" [nextRoute]="'/distribution-method'"></app-nav-header>
 
   <!-- Total Income Section -->
   <div class="total-income">
@@ -46,7 +36,5 @@
   </ion-fab>
 
   <!-- Progress Dots -->
-  <div class="page-navigation">
     <app-progress-dots [currentStep]="1"></app-progress-dots>
-  </div>
 </ion-content> 

@@ -45,9 +45,7 @@ addIcons({
       [editModalComponent]="editInvestmentModalComponent"
       [categoryIcons]="categoryIcons">
     </app-budget-entry>
-    <div class="page-navigation">
     <app-progress-dots [currentStep]=4></app-progress-dots>
-  </div>
   `,
   styles: [],
   standalone: true,

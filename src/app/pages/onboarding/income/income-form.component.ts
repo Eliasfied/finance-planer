@@ -17,6 +17,7 @@ import {
   chevronBackOutline,
   chevronForwardOutline
 } from 'ionicons/icons';
+import { NavHeaderComponent } from 'src/app/components/nav-header/nav-header.component';
 
 // Register Ionicons
 addIcons({
@@ -39,7 +40,8 @@ addIcons({
   imports: [
     CommonModule, 
     IonicModule, 
-    ProgressDotsComponent
+    ProgressDotsComponent,
+    NavHeaderComponent
   ]
 })
 export class IncomeFormComponent {
