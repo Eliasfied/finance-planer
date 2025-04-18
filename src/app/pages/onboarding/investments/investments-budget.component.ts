@@ -33,7 +33,7 @@ addIcons({
       [pageTitle]="'Investments'"
       [currentStep]="4"
       [previousRoute]="'/expenses-form'"
-      [nextRoute]="'/investments-form'"
+      [nextRoute]="'/savings-budget'"
       [entryService]="investmentService"
       [entryType]="'investments'"
       [addModalComponent]="addInvestmentModalComponent"

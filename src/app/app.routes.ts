@@ -7,6 +7,7 @@ import { authGuard } from './guards/auth.guard';
 import { DistributionMethodComponent } from './pages/onboarding/distribution-method/distribution-method.component';
 import { ExpensesBudgetComponent } from './pages/onboarding/expenses/expenses-budget.component';
 import { InvestmentsBudgetComponent } from './pages/onboarding/investments/investments-budget.component';
+import { SavingsBudgetComponent } from './pages/onboarding/savings/savings-budget.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -34,6 +35,11 @@ export const routes: Routes = [
   {
     path: 'investments-budget',
     component: InvestmentsBudgetComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'savings-budget',
+    component: SavingsBudgetComponent,
     canActivate: [authGuard]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
