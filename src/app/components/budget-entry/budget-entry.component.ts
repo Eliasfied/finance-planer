@@ -1,14 +1,15 @@
 import { Component, OnInit, inject, signal, computed, effect, Input, ContentChild, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { IonButton, IonIcon, IonCard, IonCardContent, IonFab, IonFabButton } from '@ionic/angular/standalone';
+import { IonCard, IonCardContent, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
 import { ModalController } from '@ionic/angular/standalone';
 import { ProgressDotsComponent } from '../../components/progress-dots/progress-dots.component';
+import { NavHeaderComponent } from '../../components/nav-header/nav-header.component';
 import { BudgetEntryService } from '../../services/budget-entry.service';
 import { DistributionMethodService } from '../../services/distribution-method.service';
 import { IncomeService } from '../../services/income.service';
 import { BaseBudgetEntry, EntryCategory } from '../../interfaces/budget-entry.interface';
-import { chevronBackOutline, chevronForwardOutline, addOutline } from 'ionicons/icons';
+import { addOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-budget-entry',
@@ -17,13 +18,13 @@ import { chevronBackOutline, chevronForwardOutline, addOutline } from 'ionicons/
   standalone: true,
   imports: [
     CommonModule,
-    IonButton,
-    IonIcon,
     IonCard,
     IonCardContent,
     IonFab,
     IonFabButton,
-    ProgressDotsComponent
+    IonIcon,
+    ProgressDotsComponent,
+    NavHeaderComponent
   ]
 })
 export class BudgetEntryComponent<T extends BaseBudgetEntry> implements OnInit {
@@ -33,15 +34,10 @@ export class BudgetEntryComponent<T extends BaseBudgetEntry> implements OnInit {
   private distributionService = inject(DistributionMethodService);
   
   // Icon definitions
-  chevronBackOutline = chevronBackOutline;
-  chevronForwardOutline = chevronForwardOutline;
   addOutline = addOutline;
   
   // Input parameters for page properties
   @Input() pageTitle: string = 'Budget Items';
-  @Input() currentStep: number = 1;
-  @Input() previousRoute: string = '/';
-  @Input() nextRoute: string = '/';
   @Input() entryService!: BudgetEntryService<T>;
   @Input() entryType: 'expenses' | 'investments' | 'savings' = 'expenses';
   @Input() addModalComponent: any;
@@ -146,15 +142,6 @@ export class BudgetEntryComponent<T extends BaseBudgetEntry> implements OnInit {
   // Get icon for category
   private getCategoryIcon(category: string): string {
     return this.categoryIcons[category] || 'apps';
-  }
-
-  // Navigation
-  goToNext() {
-    this.router.navigate([this.nextRoute]);
-  }
-
-  goToPrevious() {
-    this.router.navigate([this.previousRoute]);
   }
 
   // Actions

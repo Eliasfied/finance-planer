@@ -1,0 +1,11 @@
+<div class="nav-header">
+  <ion-button *ngIf="showPrevious" fill="clear" class="nav-button" (click)="goToPrevious()">
+    <ion-icon [icon]="chevronBackOutline"></ion-icon>
+    Previous
+  </ion-button>
+  <h1>{{ title }}</h1>
+  <ion-button *ngIf="showNext" fill="clear" class="nav-button" (click)="goToNext()">
+    Next
+    <ion-icon [icon]="chevronForwardOutline"></ion-icon>
+  </ion-button>
+</div> 

@@ -17,38 +17,6 @@
   position: relative;
 }
 
-.nav-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-top: 0.5rem;
-
-  h1 {
-    margin: 0;
-    font-size: 1.3rem;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #000000;
-  }
-
-  .nav-button {
-    font-size: 0.95rem;
-    min-width: auto;
-    --padding-start: 0;
-    --padding-end: 0;
-    --color: var(--ion-color-medium);
-    text-transform: none;
-    font-weight: normal;
-    
-    ion-icon {
-      font-size: 1.2rem;
-    }
-  }
-}
-
 .total-amount {
   display: flex;
   flex-direction: column;
@@ -215,7 +183,7 @@
 }
 
 ion-fab {
-  margin-bottom: 80px;
+  margin-bottom: 40px;
   
   ion-fab-button {
     --background: var(--ion-color-primary);

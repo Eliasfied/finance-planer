@@ -6,7 +6,8 @@ import { AddInvestmentBudgetEntryModalComponent } from './add-investment-modal/a
 import { EditInvestmentBudgetEntryModalComponent } from './edit-investment-modal/edit-investment-budget-entry-modal.component';
 import { add, chevronBack, chevronForward, cashOutline, statsChartOutline, logoUsd, businessOutline, logoEuro, logoAppleAppstore, logoApple, logoAmazon, logoWindows, logoCodepen, buildOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
-
+import { ProgressDotsComponent } from '../../../components/progress-dots/progress-dots.component';
+import { NavHeaderComponent } from '../../../components/nav-header/nav-header.component';
 // Register the icons
 addIcons({ 
   add, 
@@ -29,23 +30,32 @@ addIcons({
 @Component({
   selector: 'app-investments-budget',
   template: `
+    <app-nav-header 
+    [title]="'Investments'" 
+    [showPrevious]="true" 
+    [showNext]="true"
+    [previousRoute]="'/expenses-budget'"
+    [nextRoute]="'/savings-budget'">
+  </app-nav-header>
     <app-budget-entry
       [pageTitle]="'Investments'"
-      [currentStep]="4"
-      [previousRoute]="'/expenses-form'"
-      [nextRoute]="'/savings-budget'"
       [entryService]="investmentService"
       [entryType]="'investments'"
       [addModalComponent]="addInvestmentModalComponent"
       [editModalComponent]="editInvestmentModalComponent"
       [categoryIcons]="categoryIcons">
     </app-budget-entry>
+    <div class="page-navigation">
+    <app-progress-dots [currentStep]=4></app-progress-dots>
+  </div>
   `,
   styles: [],
   standalone: true,
   imports: [
     CommonModule,
-    BudgetEntryComponent
+    BudgetEntryComponent,
+    ProgressDotsComponent,
+    NavHeaderComponent
   ]
 })
 export class InvestmentsBudgetComponent {

@@ -1,16 +1,4 @@
 <div class="budget-entry-container">
-  <!-- Header with Navigation -->
-  <div class="nav-header">
-    <ion-button fill="clear" class="nav-button" (click)="goToPrevious()">
-      <ion-icon [icon]="chevronBackOutline"></ion-icon>
-      Previous
-    </ion-button>
-    <h1>{{ pageTitle }}</h1>
-    <ion-button fill="clear" class="nav-button" (click)="goToNext()">
-      Next
-      <ion-icon [icon]="chevronForwardOutline"></ion-icon>
-    </ion-button>
-  </div>
 
   <!-- Total Amount Section -->
   <div class="total-amount">
@@ -81,9 +69,4 @@
       <ion-icon [icon]="addOutline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
-  <!-- Progress Dots -->
-  <div class="page-navigation">
-    <app-progress-dots [currentStep]="currentStep"></app-progress-dots>
-  </div>
 </div> 
