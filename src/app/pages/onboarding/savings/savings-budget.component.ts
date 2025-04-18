@@ -34,7 +34,7 @@ addIcons({
     [showPrevious]="true" 
     [showNext]="true"
     [previousRoute]="'/investments-budget'"
-    [nextRoute]="'/login'">
+    [nextRoute]="'/homepage'">
   </app-nav-header>
     <app-budget-entry
       [pageTitle]="'Savings'"
