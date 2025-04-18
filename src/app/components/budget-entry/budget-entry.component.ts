@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { IonCard, IonCardContent, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
 import { ModalController } from '@ionic/angular/standalone';
-import { ProgressDotsComponent } from '../../components/progress-dots/progress-dots.component';
-import { NavHeaderComponent } from '../../components/nav-header/nav-header.component';
 import { BudgetEntryService } from '../../services/budget-entry.service';
 import { DistributionMethodService } from '../../services/distribution-method.service';
 import { IncomeService } from '../../services/income.service';
@@ -22,9 +20,7 @@ import { addOutline } from 'ionicons/icons';
     IonCardContent,
     IonFab,
     IonFabButton,
-    IonIcon,
-    ProgressDotsComponent,
-    NavHeaderComponent
+    IonIcon
   ]
 })
 export class BudgetEntryComponent<T extends BaseBudgetEntry> implements OnInit {

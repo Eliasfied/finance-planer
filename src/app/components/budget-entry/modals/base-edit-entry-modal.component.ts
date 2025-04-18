@@ -1,15 +1,6 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { 
-  IonContent, 
-  IonIcon, 
-  IonInput, 
-  IonSelect, 
-  IonSelectOption, 
-  IonText,
-  IonButton
-} from '@ionic/angular/standalone';
 import { ModalController } from '@ionic/angular/standalone';
 import { BudgetEntryService } from '../../../services/budget-entry.service';
 import { BaseBudgetEntry } from '../../../interfaces/budget-entry.interface';
@@ -26,14 +17,7 @@ addIcons({
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
-    IonContent,
-    IonIcon,
-    IonInput,
-    IonSelect,
-    IonSelectOption,
-    IonText,
-    IonButton
+    FormsModule
   ]
 })
 export abstract class BaseEditEntryModalComponent<T extends BaseBudgetEntry> implements OnInit {
