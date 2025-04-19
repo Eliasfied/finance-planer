@@ -47,113 +47,68 @@
   <ion-card class="chart-card">
     <ion-card-header>
       <ion-card-title>Income Distribution</ion-card-title>
-      <ion-card-subtitle>{{ totalIncome() | currency:'EUR':'symbol':'1.0-0' }} monthly</ion-card-subtitle>
+      <ion-card-subtitle>
+        {{ distributionService.expensesPercentage() }} | {{ distributionService.investmentsPercentage() }} | {{ distributionService.savingsPercentage() }}
+      </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <div class="chart-container">
-        <!-- Chart on left, legend on right -->
-        <div class="pie-chart">
-          <svg viewBox="0 0 100 100" class="pie">
-            <!-- Background circle -->
-            <circle cx="50" cy="50" r="45" class="pie-ring"></circle>
-            
-            <!-- Center white circle to create donut effect -->
-            <circle cx="50" cy="50" r="30" fill="white"></circle>
-            
-            <!-- Percentage text in the center -->
-            <text x="50" y="50" text-anchor="middle" dominant-baseline="middle" class="percentage-text">
-              {{ chartData()[0].value / totalIncome() * 100 | number:'1.0-0' }}%
-            </text>
-            
-            <!-- Segments -->
-            @for (item of chartData(); track item.name; let i = $index) {
-              <circle 
-                cx="50" 
-                cy="50" 
-                r="45" 
-                class="pie-segment"
-                [style.stroke]="item.color"
-                [style.stroke-dasharray]="calculateDashArray(item.value)"
-                [style.stroke-dashoffset]="calculateOffset(i)">
-              </circle>
-            }
-          </svg>
+      <div class="budget-overview">
+        <div class="budget-item">
+          <div class="budget-icon">
+            <ion-icon name="cart-outline"></ion-icon>
+          </div>
+          <div class="budget-info">
+            <h3>Expenses</h3>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="budgetStatus().expenses.percent"></div>
+            </div>
+            <div class="budget-amount">
+              <span>{{ budgetStatus().expenses.actual | currency:'EUR':'symbol':'1.0-0' }}</span>
+              <span class="remaining" [ngClass]="{'danger-text': budgetStatus().expenses.isOverBudget}">
+                {{ budgetStatus().expenses.remaining | currency:'EUR':'symbol':'1.0-0' }}
+              </span>
+            </div>
+          </div>
         </div>
         
-        <div class="chart-legend">
-          @for (item of chartData(); track item.name) {
-            <div class="legend-item">
-              <div class="legend-color" [style.background-color]="item.color"></div>
-              <div class="legend-text">
-                <div class="legend-name">{{ item.name }}</div>
-                <div class="legend-value">{{ item.value | currency:'EUR':'symbol':'1.0-0' }}</div>
-              </div>
+        <div class="budget-item">
+          <div class="budget-icon">
+            <ion-icon name="trending-up-outline"></ion-icon>
+          </div>
+          <div class="budget-info">
+            <h3>Investments</h3>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="budgetStatus().investments.percent"></div>
             </div>
-          }
+            <div class="budget-amount">
+              <span>{{ budgetStatus().investments.actual | currency:'EUR':'symbol':'1.0-0' }}</span>
+              <span class="remaining" [ngClass]="{'danger-text': budgetStatus().investments.isOverBudget}">
+                {{ budgetStatus().investments.remaining | currency:'EUR':'symbol':'1.0-0' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="budget-item">
+          <div class="budget-icon">
+            <ion-icon name="save-outline"></ion-icon>
+          </div>
+          <div class="budget-info">
+            <h3>Savings</h3>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="budgetStatus().savings.percent"></div>
+            </div>
+            <div class="budget-amount">
+              <span>{{ budgetStatus().savings.actual | currency:'EUR':'symbol':'1.0-0' }}</span>
+              <span class="remaining" [ngClass]="{'danger-text': budgetStatus().savings.isOverBudget}">
+                {{ budgetStatus().savings.remaining | currency:'EUR':'symbol':'1.0-0' }}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </ion-card-content>
   </ion-card>
-
-  <!-- Budget Cards -->
-  <div class="budget-cards">
-    <!-- Expenses Budget Card -->
-    <ion-card class="budget-card">
-      <ion-card-content>
-        <div class="budget-icon" style="background: rgba(255, 107, 107, 0.1);">
-          <ion-icon name="cart-outline" style="color: #FF6B6B;"></ion-icon>
-        </div>
-        <div class="budget-details">
-          <h2>Expenses</h2>
-          <div class="budget-amount">
-            <span class="amount">{{ budgetStatus().expenses.planned | currency:'EUR':'symbol':'1.0-0' }}</span>
-            <span class="period">monthly</span>
-          </div>
-          <div class="budget-status" [ngClass]="{'over-budget': budgetStatus().expenses.isOverBudget}">
-            {{ budgetStatus().expenses.isOverBudget ? 'Over budget' : 'Under budget' }}
-          </div>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Savings Budget Card -->
-    <ion-card class="budget-card">
-      <ion-card-content>
-        <div class="budget-icon" style="background: rgba(78, 205, 196, 0.1);">
-          <ion-icon name="save-outline" style="color: #4ECDC4;"></ion-icon>
-        </div>
-        <div class="budget-details">
-          <h2>Savings</h2>
-          <div class="budget-amount">
-            <span class="amount">{{ budgetStatus().savings.planned | currency:'EUR':'symbol':'1.0-0' }}</span>
-            <span class="period">monthly</span>
-          </div>
-          <div class="budget-status" [ngClass]="{'over-budget': budgetStatus().savings.isOverBudget}">
-            {{ budgetStatus().savings.isOverBudget ? 'Over budget' : 'Under budget' }}
-          </div>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Investments Budget Card -->
-    <ion-card class="budget-card">
-      <ion-card-content>
-        <div class="budget-icon" style="background: rgba(122, 119, 255, 0.1);">
-          <ion-icon name="trending-up-outline" style="color: #7A77FF;"></ion-icon>
-        </div>
-        <div class="budget-details">
-          <h2>Investments</h2>
-          <div class="budget-amount">
-            <span class="amount">{{ budgetStatus().investments.planned | currency:'EUR':'symbol':'1.0-0' }}</span>
-            <span class="period">monthly</span>
-          </div>
-          <div class="budget-status" [ngClass]="{'over-budget': budgetStatus().investments.isOverBudget}">
-            {{ budgetStatus().investments.isOverBudget ? 'Over budget' : 'Under budget' }}
-          </div>
-        </div>
-      </ion-card-content>
-    </ion-card>
-  </div>
 
   <!-- Bottom padding for navigation bar -->
   <div class="nav-spacer"></div>

@@ -146,83 +146,76 @@ ion-content {
   }
 }
 
-// Pie Chart and Legend
-.chart-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 16px 0;
-}
-
-.pie-chart {
-  flex: 0 0 auto;
-  width: 40%;
-  min-width: 140px;
-  max-width: 180px;
-}
-
-.pie {
-  width: 100%;
-  height: auto;
-  transform: rotate(-90deg);
-}
-
-.pie-ring {
-  fill: none;
-  stroke: #f1f1f1;
-  stroke-width: 10;
-}
-
-.pie-segment {
-  fill: none;
-  stroke-width: 10;
-  transition: stroke-dasharray 0.3s ease;
-}
-
-.percentage-text {
-  font-size: 14px;
-  font-weight: bold;
-  fill: var(--ion-color-dark);
-  transform: rotate(90deg);
-}
-
-.chart-legend {
+// Budget overview styles (new)
+.budget-overview {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
-  padding-left: 24px;
+  gap: 20px;
+  padding: 10px 0;
 }
 
-.legend-item {
+.budget-item {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  gap: 16px;
 }
 
-.legend-color {
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-  margin-right: 12px;
+.budget-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
   flex-shrink: 0;
+  background: rgba(var(--ion-color-primary-rgb), 0.1);
+  
+  ion-icon {
+    font-size: 24px;
+    color: var(--ion-color-primary);
+  }
 }
 
-.legend-text {
+.budget-info {
+  flex: 1;
+  
+  h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ion-color-dark);
+  }
+}
+
+.progress-bar {
+  height: 6px;
+  background-color: #f1f1f1;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background-color: var(--ion-color-primary);
+}
+
+.budget-amount {
   display: flex;
-  flex-direction: column;
-}
-
-.legend-name {
-  font-size: 14px;
-  color: var(--ion-color-dark);
-  font-weight: 500;
-}
-
-.legend-value {
-  font-size: 16px;
+  justify-content: space-between;
   font-weight: 600;
-  color: var(--ion-color-dark);
-  margin-top: 2px;
+  font-size: 16px;
+  
+  .remaining {
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--ion-color-success);
+    
+    &.danger-text {
+      color: var(--ion-color-danger);
+    }
+  }
 }
 
 // Budget Cards

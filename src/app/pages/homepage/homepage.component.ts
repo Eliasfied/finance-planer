@@ -6,6 +6,7 @@ import { IncomeService } from '../../services/income.service';
 import { ExpenseBudgetEntryService } from '../../services/expense-budget-entry.service';
 import { SavingsBudgetEntryService } from '../../services/savings-budget-entry.service';
 import { InvestmentBudgetEntryService } from '../../services/investment-budget-entry.service';
+import { DistributionMethodService } from '../../services/distribution-method.service';
 import { computed, signal } from '@angular/core';
 import { addIcons } from 'ionicons';
 import { 
@@ -42,6 +43,7 @@ export class HomepageComponent implements OnInit {
   private expenseService = inject(ExpenseBudgetEntryService);
   private savingsService = inject(SavingsBudgetEntryService);
   private investmentService = inject(InvestmentBudgetEntryService);
+  public distributionService = inject(DistributionMethodService);
 
   constructor() {
     // Register icons
@@ -67,26 +69,53 @@ export class HomepageComponent implements OnInit {
     });
   }
 
-  // Chart data
-  chartData = signal<{name: string, value: number, color: string}[]>([]);
   
   // Budget status
   budgetStatus = computed(() => {
+    const totalIncome = this.incomeService.totalMonthlyIncome();
+    
+    // Get distribution percentages from service
+    const expensesPercent = this.distributionService.expensesPercentage() / 100;
+    const savingsPercent = this.distributionService.savingsPercentage() / 100;
+    const investmentsPercent = this.distributionService.investmentsPercentage() / 100;
+    
+    // Calculate budgets based on income and distribution percentages
+    const expensesBudget = totalIncome * expensesPercent;
+    const savingsBudget = totalIncome * savingsPercent;
+    const investmentsBudget = totalIncome * investmentsPercent;
+    
+    // Get the actual planned amounts from the budget services
+    const expensesPlanned = this.expenseService.totalMonthlyAmount();
+    const savingsPlanned = this.savingsService.totalMonthlyAmount();
+    const investmentsPlanned = this.investmentService.totalMonthlyAmount();
+    
+    // Calculate how much of the budget is spent so far (actual planned values)
+    // As a percentage of the allocated budget based on distribution
+    const expensesPercUsed = expensesPlanned / expensesBudget * 100;
+    const savingsPercUsed = savingsPlanned / savingsBudget * 100;
+    const investmentsPercUsed = investmentsPlanned / investmentsBudget * 100;
+    
     return {
       expenses: {
-        planned: this.expenseService.totalMonthlyAmount(),
-        actual: 0, // This would come from actual spending tracking
-        isOverBudget: false
+        planned: expensesBudget,
+        actual: expensesPlanned,
+        remaining: expensesBudget - expensesPlanned,
+        percent: expensesPercUsed,
+        isOverBudget: expensesPlanned > expensesBudget
       },
       savings: {
-        planned: this.savingsService.totalMonthlyAmount(),
-        actual: 0, // This would come from actual savings tracking
-        isOverBudget: false
+        planned: savingsBudget,
+        actual: savingsPlanned,
+        remaining: savingsBudget - savingsPlanned,
+        percent: savingsPercUsed,
+        isOverBudget: savingsPlanned > savingsBudget
       },
       investments: {
-        planned: this.investmentService.totalMonthlyAmount(),
-        actual: 0, // This would come from actual investment tracking
-        isOverBudget: false
+        planned: investmentsBudget,
+        actual: investmentsPlanned,
+        remaining: investmentsBudget - investmentsPlanned,
+        percent: investmentsPercUsed,
+        isOverBudget: investmentsPlanned > investmentsBudget
       }
     };
   });
@@ -95,62 +124,5 @@ export class HomepageComponent implements OnInit {
   totalIncome = computed(() => this.incomeService.totalMonthlyIncome());
   
   ngOnInit(): void {
-    this.updateChartData();
   }
-
-  private updateChartData(): void {
-    // In a real app, we would fetch actual data here
-    // For now, using planned amounts as examples
-    const income = this.incomeService.totalMonthlyIncome();
-    const expenses = this.expenseService.totalMonthlyAmount();
-    const savings = this.savingsService.totalMonthlyAmount();
-    const investments = this.investmentService.totalMonthlyAmount();
-    const remaining = Math.max(0, income - expenses - savings - investments);
-
-    // Create array of categories
-    const items = [
-      { name: 'Expenses', value: expenses, color: '#FF6B6B' },
-      { name: 'Savings', value: savings, color: '#4ECDC4' },
-      { name: 'Investments', value: investments, color: '#7A77FF' },
-      { name: 'Remaining', value: remaining, color: '#FFD166' }
-    ];
-
-    // Sort by value, largest first (for the percentage display)
-    items.sort((a, b) => b.value - a.value);
-
-    this.chartData.set(items);
-  }
-
-  // Helper method for chart offset calculation
-  calculateOffset(index: number): number {
-    if (index === 0) {
-      return 0;
-    }
-    
-    let offset = 0;
-    const income = this.totalIncome();
-    
-    if (income <= 0) {
-      return 0;
-    }
-    
-    for (let i = 0; i < index; i++) {
-      offset += (this.chartData()[i].value / income) * 283;
-    }
-    
-    return -1 * offset;
-  }
-  
-  // Helper method for dash array calculation
-  calculateDashArray(value: number): string {
-    const income = this.totalIncome();
-    if (income <= 0) {
-      return '0 283';
-    }
-    return ((value / income) * 283) + ' 283';
-  }
-
-  navigateTo(path: string): void {
-    this.router.navigateByUrl(path);
-  }
-} 
+}
