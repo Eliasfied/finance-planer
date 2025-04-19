@@ -123,22 +123,23 @@ ion-content {
   background: white;
   position: relative;
   z-index: 10;
+  padding-top: 24px;
   
-  ion-card-header {
-    padding: 16px 16px 0;
+  .small-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ion-color-medium);
+    position: absolute;
+    top: 16px;
+    left: 16px;
+  }
+  
+  .distribution-subtitle {
     text-align: center;
-    
-    ion-card-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--ion-color-dark);
-    }
-    
-    ion-card-subtitle {
-      font-size: 14px;
-      color: var(--ion-color-medium);
-      margin-top: 4px;
-    }
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+    margin-bottom: 16px;
   }
   
   ion-card-content {
