@@ -5,22 +5,10 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProgressDotsComponent } from 'src/app/components/progress-dots/progress-dots.component';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { addIcons } from 'ionicons';
-import { cartOutline, trendingUpOutline, walletOutline, arrowForwardOutline, checkmarkCircle, createOutline, warningOutline, closeOutline } from 'ionicons/icons';
 import { DistributionMethodService } from 'src/app/services/distribution-method.service';
 import { NavHeaderComponent } from 'src/app/components/nav-header/nav-header.component';
 
-// Register the icons
-addIcons({ 
-  cartOutline, 
-  trendingUpOutline, 
-  walletOutline, 
-  arrowForwardOutline, 
-  checkmarkCircle,
-  createOutline,
-  warningOutline,
-  closeOutline
-});
+
 
 @Component({
   selector: 'app-distribution-method',
